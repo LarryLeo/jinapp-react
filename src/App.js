@@ -10,13 +10,16 @@ import Login from './pages/login/index'
 import Register from './pages/register/index'
 import NotFound from './pages/NoFound/index'
 
+import BottomTabNavigator from './components/BottomTabNavigator/index'
+
 export default class App extends Component {
   componentDidMount() {}
   render() {
     return (
       <BrowserRouter>
-        <div>
+        <div className='App'>
           <GlobalStyle />
+          <BottomTabNavigator />
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/service' component={Service} />
