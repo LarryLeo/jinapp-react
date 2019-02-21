@@ -1,20 +1,22 @@
 import React, { Component } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { withRouter } from 'react-router'
 import { BottomTabGroup } from "./style";
 import { Icon } from "antd";
 
-export default class BottomTabNavigator extends Component {
+class BottomTabNavigator extends Component {
   handelActive = (match, location) => {
     console.log(!!match)
   }
   render() {
     return (
-      <BottomTabGroup>
+      <BottomTabGroup isLevelOne={this.props.location.state.level}>
         <div className="tabWrapper">
           <NavLink activeClassName='activeTab' exact to={{
             pathname: '/',
             state: {
-              title: '首页'
+              title: '警企e通',
+              level: 1
             }
           }}>
             <div className="iconWrapper">
@@ -25,7 +27,8 @@ export default class BottomTabNavigator extends Component {
           <NavLink activeClassName='activeTab' exact to={{
             pathname: '/service',
             state: {
-              title: '江津政务'
+              title: '江津政务',
+              level: 1
             }
           }}>
             <div className="iconWrapper">
@@ -37,7 +40,8 @@ export default class BottomTabNavigator extends Component {
           <NavLink activeClassName='activeTab' exact to={{
             pathname: '/my',
             state: {
-              title: '我的'
+              title: '我的',
+              level: 1
             }
           }}>
             <div className="iconWrapper">
@@ -51,3 +55,5 @@ export default class BottomTabNavigator extends Component {
     );
   }
 }
+
+export default withRouter(BottomTabNavigator)

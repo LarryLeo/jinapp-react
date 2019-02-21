@@ -10,6 +10,8 @@ import Login from './pages/login/index'
 import Register from './pages/register/index'
 import NotFound from './pages/NoFound/index'
 
+import Notice from './pages/notice/index'
+
 import HeaderTitle from './components/HeaderTitle/index'
 import BottomTabNavigator from './components/BottomTabNavigator/index'
 
@@ -22,13 +24,16 @@ export default class App extends Component {
           <GlobalStyle />
           <HeaderTitle />
           <BottomTabNavigator />
+          {/* 一级页面之间Tab导航 , Switch在初次匹配上路由的时候，即停止向后检索*/}
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/service' component={Service} />
             <Route exact path='/my' component={My} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
-            {/* 没找到 */}
+            {/* 一级页面向二级三级页面导航 */}
+            <Route exact path='/notice' component={Notice} />
+            {/* 没找到404, 始终写在最后一个路由后面，保证检索完整个路由 */}
             <Route component={NotFound} />
           </Switch>
         </div>

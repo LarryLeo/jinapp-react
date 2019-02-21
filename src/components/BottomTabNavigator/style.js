@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 export const BottomTabGroup = styled.div`
+  display: ${props => props.isLevelOne ? 'block': 'none'};
   position: absolute;
   left: 0;
   bottom: 0;
