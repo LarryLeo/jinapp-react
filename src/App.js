@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 import { GlobalStyle } from "./style";
+import './App.css'
 
 import Home from './pages/home/index'
 import Service from './pages/serviceNav/index'
