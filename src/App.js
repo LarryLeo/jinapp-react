@@ -10,6 +10,7 @@ import Login from './pages/login/index'
 import Register from './pages/register/index'
 import NotFound from './pages/NoFound/index'
 
+import HeaderTitle from './components/HeaderTitle/index'
 import BottomTabNavigator from './components/BottomTabNavigator/index'
 
 export default class App extends Component {
@@ -19,6 +20,7 @@ export default class App extends Component {
       <BrowserRouter>
         <div className='App'>
           <GlobalStyle />
+          <HeaderTitle />
           <BottomTabNavigator />
           <Switch>
             <Route exact path='/' component={Home} />
