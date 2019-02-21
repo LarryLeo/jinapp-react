@@ -5,18 +5,18 @@ export const BottomTabGroup = styled.div`
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #fffafa;
+  background-color: #fff;
   .tabWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 20px;
     height: 50px;
   }
   a {
-    color: #000;
+    color: #33313b;
     &:hover {
-      color: #000;
+      color: #33313b;
     }
   }
   .iconWrapper {
@@ -26,7 +26,10 @@ export const BottomTabGroup = styled.div`
   }
   .tabName {
     font-size: 12px;
-    &.active {
+  }
+  .activeTab {
+    color: #007aff;
+    &:hover {
       color: #007aff;
     }
   }
