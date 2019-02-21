@@ -1,38 +1,30 @@
-import React, { Component } from 'react'
-import { GlobalStyle } from './style'
-import { fromJS } from 'immutable'
+import React, { Component } from "react";
+import { BrowserRouter, Route, Switch} from "react-router-dom";
+import { GlobalStyle } from "./style";
 
-const HistoryInitialState = {
-  pn: 1,
-  ps: 5,
-  loading: false,
-  needFresh: false,
-  noMoreData: false,
-  data: [1,2,3,4,5, {nested: 'nes'}]
-}
+import Home from './pages/home/index'
+import Service from './pages/serviceNav/index'
+import My from './pages/my'
+import Login from './pages/login/index'
+import Register from './pages/register/index'
+import NotFound from './pages/NoFound/index'
+
 export default class App extends Component {
-
-  renderList = () => {
-    let imData = fromJS(HistoryInitialState)
-    return imData.getIn(['data']).slice(0,5).map((item,index) => (
-      <li key={index}>{item}</li>
-    ))
-  }
-  componentDidMount() {
-    let imData = fromJS(HistoryInitialState)
-    // let imData2 = fromJS(HistoryInitialState)
-    console.log(imData.getIn(['data']).slice(0,5).map(item => item*2))
-  }
+  componentDidMount() {}
   render() {
     return (
-      <div>
-        <GlobalStyle />
-        <p>Hello World</p>
-        <p>默认样式测试</p>
-        <ul>
-          {this.renderList()}
-        </ul>
-      </div>
-    )
+      <BrowserRouter>
+        <div>
+          <GlobalStyle />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/service' component={Service} />
+            <Route exact path='/my' component={My} />
+            {/* 没找到 */}
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    );
   }
 }
