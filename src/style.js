@@ -44,4 +44,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+/* 自定义 */
+a {
+  color: #000;
+  text-decoration: none
+}
 `

@@ -20,6 +20,8 @@ export default class App extends Component {
             <Route exact path='/' component={Home} />
             <Route exact path='/service' component={Service} />
             <Route exact path='/my' component={My} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
             {/* 没找到 */}
             <Route component={NotFound} />
           </Switch>
