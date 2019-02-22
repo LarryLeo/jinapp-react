@@ -4,7 +4,8 @@ import { withRouter } from "react-router";
 import { BottomTabGroup } from "./style";
 import { TabBar } from "antd-mobile";
 import { IoMdHome, IoIosBriefcase, IoMdPerson } from "react-icons/io";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
+import { switchHomeTabs } from "../../actions/index";
 
 import Home from "../../pages/home/index";
 import Service from "../../pages/serviceNav/index";
@@ -15,11 +16,11 @@ class BottomTabNavigator extends Component {
     selectedTab: "home"
   };
 
-  switchTab = (tabName) => {
+  switchTab = tabName => {
     this.setState({
       selectedTab: tabName
-    })
-  }
+    });
+  };
 
   handelPageLevel = () => {
     const { location } = this.props;
@@ -48,7 +49,7 @@ class BottomTabNavigator extends Component {
     }
   };
   componentDidMount() {
-    console.log(this.props)
+    console.log(this.props);
   }
   render() {
     return (
@@ -58,26 +59,26 @@ class BottomTabNavigator extends Component {
             title="首页"
             icon={<IoMdHome fontSize={26} />}
             selectedIcon={<IoMdHome fontSize={26} />}
-            selected={this.state.selectedTab === "home"}
-            onPress={() => this.switchTab('home')}
+            selected={this.props.homeTabs.get('activeTab') === "home"}
+            onPress={() => this.props.switchHomeTabs("home")}
           >
             <Home />
           </TabBar.Item>
           <TabBar.Item
             title="江津政务"
             icon={<IoIosBriefcase fontSize={26} />}
-            selected={this.state.selectedTab === "service"}
+            selected={this.props.homeTabs.get('activeTab') === "service"}
             selectedIcon={<IoIosBriefcase fontSize={26} />}
-            onPress={() => this.switchTab('service')}
+            onPress={() => this.props.switchHomeTabs("service")}
           >
             <Service />
           </TabBar.Item>
           <TabBar.Item
             title="我的"
             icon={<IoMdPerson fontSize={26} />}
-            selected={this.state.selectedTab === "my"}
+            selected={this.props.homeTabs.get('activeTab') === "my"}
             selectedIcon={<IoMdPerson fontSize={26} />}
-            onPress={() => this.switchTab('my')}
+            onPress={() => this.props.switchHomeTabs("my")}
           >
             <My />
           </TabBar.Item>
@@ -87,12 +88,17 @@ class BottomTabNavigator extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  home: state
-})
+const mapStateToProps = state => ({
+  homeTabs: state.get("homeTabs")
+});
 
 const mapDispatchToProps = {
+  switchHomeTabs
+};
 
-}
-
-export default withRouter(connect(mapStateToProps, null)(BottomTabNavigator));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(BottomTabNavigator)
+);
