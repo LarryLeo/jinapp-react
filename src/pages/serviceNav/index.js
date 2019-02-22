@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 export default class Service extends Component {
   componentDidMount() {
@@ -8,6 +9,9 @@ export default class Service extends Component {
     return (
       <div>
         <p>江津政务</p>
+        <Link to='/contacts'>
+          <p>跳转至警企备忘录</p>
+        </Link>
       </div>
     )
   }
