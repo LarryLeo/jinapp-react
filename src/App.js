@@ -10,7 +10,7 @@ import Register from './pages/register/index'
 import NotFound from './pages/NoFound/index'
 
 import Notice from './pages/notice/index'
-import NoticeDetail from './pages/noticeDetail/index'
+import NoticeDetail from './pages/notice/noticeDetail/index'
 
 import Contacts from './pages/serviceNav/contacts/index'
 

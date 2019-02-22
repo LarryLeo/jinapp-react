@@ -39,18 +39,12 @@ class HeaderTitle extends Component {
   }
   render() {
     return (
-      <div>
         <NavBar
           mode="dark"
-          icon={<Icon type="left" />}
-          rightContent={[
-            <Icon key="0" type="search" style={{ marginRight: "16px" }} />,
-            <Icon key="1" type="ellipsis" />
-          ]}
+          leftContent={this.props.location.pathname === '/' ? <div></div> : <Icon onClick={() => this.props.history.goBack()} type="left" />}
         >
-          顶部导航
+          {this.renderNavTitle().title}
         </NavBar>
-      </div>
     );
   }
 }

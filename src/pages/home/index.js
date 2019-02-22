@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Button } from 'antd-mobile'
+import { Flex } from 'antd-mobile'
 
 export default class Home extends Component {
   componentDidMount() {
@@ -8,8 +8,8 @@ export default class Home extends Component {
   }
   render() {
     return (
-      <div>
-        <p>首页</p>
+
+          <div style={{backgroundColor: 'yellow', height: '100%'}}><p>首页</p>
         <Link to={{
           pathname: '/notice',
           state: {
@@ -17,8 +17,9 @@ export default class Home extends Component {
           }
         }}>
         <p>跳转至政策宣传</p>
-        </Link>
-      </div>
+        </Link></div>
+
+
     );
   }
 }

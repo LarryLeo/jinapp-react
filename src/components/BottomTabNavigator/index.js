@@ -53,8 +53,8 @@ class BottomTabNavigator extends Component {
   }
   render() {
     return (
-      <div style={{ position: "fixed", bottom: 0, width: "100%" }}>
-        <TabBar tabBarPosition="bottom" prerenderingSiblingsNumber={0}>
+      <div style={{position: 'absolute', width: '100%', height:'calc(100% - 45px)', left: 0, top: '45px'}}>
+        <TabBar prerenderingSiblingsNumber={0}>
           <TabBar.Item
             title="首页"
             icon={<IoMdHome fontSize={26} />}
