@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { Button } from "antd";
 
 export default class Home extends Component {
+  componentDidMount() {
+    console.log('触发')
+  }
   render() {
     return (
       <div>

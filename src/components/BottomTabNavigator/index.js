@@ -5,12 +5,35 @@ import { BottomTabGroup } from "./style";
 import { Icon } from "antd";
 
 class BottomTabNavigator extends Component {
-  handelActive = (match, location) => {
-    console.log(!!match)
+  handelPageLevel = () => {
+    const { location } = this.props;
+    if(location.state) return location.state
+    switch (location.pathname) {
+      case '/my':
+        return {
+          title: '我的',
+          level: 1
+        }
+      case '/service':
+        return {
+          title: '江津政务',
+          level: 1
+        }
+      case '/':
+        return {
+          title: '警企e通',
+          level: 1
+        }
+      default:
+        return {
+          title: '默认',
+          level: 0
+        }
+    }
   }
   render() {
     return (
-      <BottomTabGroup isLevelOne={this.props.location.state.level}>
+      <BottomTabGroup isLevelOne={this.handelPageLevel().level}>
         <div className="tabWrapper">
           <NavLink activeClassName='activeTab' exact to={{
             pathname: '/',
