@@ -24,12 +24,11 @@ export default class App extends Component {
         <div className='App'>
           <GlobalStyle />
           <HeaderTitle />
-          <BottomTabNavigator />
           {/* 一级页面之间Tab导航 , Switch在初次匹配上路由的时候，即停止向后检索*/}
           <Switch>
-            <Route exact path='/' component={Home} />
-            <Route exact path='/service' component={Service} />
-            <Route exact path='/my' component={My} />
+            <Route exact path='/' component={BottomTabNavigator} />
+            {/* <Route exact path='/service' component={Service} />
+            <Route exact path='/my' component={My} /> */}
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
             {/* 一级页面向二级三级页面导航 */}

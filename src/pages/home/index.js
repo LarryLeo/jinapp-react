@@ -4,13 +4,12 @@ import { Button } from 'antd-mobile'
 
 export default class Home extends Component {
   componentDidMount() {
-    console.log('触发')
+    console.log('首页挂载')
   }
   render() {
     return (
       <div>
         <p>首页</p>
-        <Button type='primary'>按钮</Button>
         <Link to={{
           pathname: '/notice',
           state: {
