@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import { BottomTabGroup } from "./style";
 import { TabBar } from "antd-mobile";
 import { IoMdHome, IoIosBriefcase, IoMdPerson } from "react-icons/io";
+import { connect } from 'react-redux'
 
 import Home from "../../pages/home/index";
 import Service from "../../pages/serviceNav/index";
@@ -46,6 +47,9 @@ class BottomTabNavigator extends Component {
         };
     }
   };
+  componentDidMount() {
+    console.log(this.props)
+  }
   render() {
     return (
       <div style={{ position: "fixed", bottom: 0, width: "100%" }}>
@@ -83,4 +87,12 @@ class BottomTabNavigator extends Component {
   }
 }
 
-export default withRouter(BottomTabNavigator);
+const mapStateToProps = (state) => ({
+  home: state
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default withRouter(connect(mapStateToProps, null)(BottomTabNavigator));

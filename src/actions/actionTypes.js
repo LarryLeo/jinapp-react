@@ -1,0 +1,1 @@
+export const SWITCH_HOME_TAB = 'SWITCH_HOME_TAB'
