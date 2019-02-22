@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Button } from 'antd-mobile'
 
 export default class Home extends Component {
   componentDidMount() {
@@ -10,6 +10,7 @@ export default class Home extends Component {
     return (
       <div>
         <p>首页</p>
+        <Button type='primary'>按钮</Button>
         <Link to={{
           pathname: '/notice',
           state: {

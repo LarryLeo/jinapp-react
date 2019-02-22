@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { BottomTabGroup } from "./style";
-import { Icon } from "antd";
 
 class BottomTabNavigator extends Component {
   handelPageLevel = () => {
@@ -43,7 +42,6 @@ class BottomTabNavigator extends Component {
             }
           }}>
             <div className="iconWrapper">
-              <Icon style={{fontSize: 20}} type="home" theme="filled" />
               <span className='tabName'>首页</span>
             </div>
           </NavLink>
@@ -55,8 +53,6 @@ class BottomTabNavigator extends Component {
             }
           }}>
             <div className="iconWrapper">
-              {" "}
-              <Icon style={{fontSize: 20}} type="printer" theme="filled" />
               <span className='tabName'>江津政务</span>
             </div>
           </NavLink>
@@ -68,8 +64,6 @@ class BottomTabNavigator extends Component {
             }
           }}>
             <div className="iconWrapper">
-              {" "}
-              <Icon style={{fontSize: 20}} type="smile" theme="filled" />
               <span className='tabName'>我的</span>
             </div>
           </NavLink>

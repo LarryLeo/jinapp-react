@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { HeaderTitleWrapper } from './style'
-import { Icon } from 'antd'
 
 class HeaderTitle extends Component {
   static navOptions = {
@@ -44,7 +43,6 @@ class HeaderTitle extends Component {
       <HeaderTitleWrapper isLevelOne={this.renderNavTitle().level}>
         {this.renderNavTitle().title}
         <div onClick={() => this.props.history.goBack()} className='backButton'>
-          <Icon style={{fontWeight: 'bold', padding: 5}} type="left" />
         </div>
       </HeaderTitleWrapper>
     )
