@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import { HeaderTitleWrapper } from "./style";
 import { NavBar, Icon } from "antd-mobile";
 import { connect } from "react-redux";
 

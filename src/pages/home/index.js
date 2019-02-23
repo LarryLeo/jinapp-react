@@ -13,6 +13,8 @@ import iconPolicy from "../../assets/icons/policy.png";
 import iconSuggestion from "../../assets/icons/suggestion.png";
 import bgImgWeather from "../../assets/images/weather.jpg";
 
+import { requestGet } from '../../utils/utils'
+
 import { HomePageWrapper } from "./style";
 
 export default class Home extends Component {
@@ -20,6 +22,7 @@ export default class Home extends Component {
     slideImages: [slideImage, slideImage, slideImage]
   };
   componentDidMount() {
+    // 实例化Swiper
     var mySwiper = new Swiper(".swiper-container", {
       loop: true, //循环
       pagination: {
@@ -27,6 +30,12 @@ export default class Home extends Component {
         clickable: true // 允许点击跳转
       }
     });
+    // 测试异步请求
+    requestGet({
+      apiUrl: '/app/v1/index/weather',
+    }).then(res => {
+      console.log(res)
+    })
   }
   render() {
     return (
