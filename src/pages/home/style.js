@@ -4,6 +4,9 @@ export const HomePageWrapper = styled.div`
   background-color: #fff;
   height: 100%;
   padding: 5px 15px;
+  a {
+    color: #fff;
+  }
   .swiper-container {
     height: 150px;
   }
