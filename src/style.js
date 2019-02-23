@@ -53,4 +53,11 @@ a {
   color: #000;
   text-decoration: none
 }
+.switch-wrapper {
+  position: relative;
+}
+
+.switch-wrapper > div {
+  position: absolute;
+}
 `

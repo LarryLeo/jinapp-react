@@ -4,6 +4,7 @@ import store from './store/index'
 import { Provider } from 'react-redux'
 import { GlobalStyle } from "./style";
 import './App.css'
+import { AnimatedSwitch } from 'react-router-transition'
 
 import Login from './pages/login/index'
 import Register from './pages/register/index'
@@ -45,11 +46,16 @@ export default class App extends Component {
             <GlobalStyle />
             <HeaderTitle />
             {/* 一级页面之间Tab导航 , Switch在初次匹配上路由的时候，即停止向后检索*/}
-            <Switch>
+            <AnimatedSwitch
+              atEnter={{ opacity: 0 }}
+              atLeave={{ opacity: 0 }}
+              atActive={{ opacity: 1 }}
+              className="switch-wrapper"
+            >
               {routes.map((route, index) => <Route exact path={route.path} component={route.component} key={index} />)}
               {/* 没找到404, 始终写在最后一个路由后面，保证检索完整个路由 */}
               <Route component={NotFound} />
-            </Switch>
+            </AnimatedSwitch>
           </div>
         </BrowserRouter>
       </Provider>
