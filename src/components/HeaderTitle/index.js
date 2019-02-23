@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { HeaderTitleWrapper } from "./style";
 import { NavBar, Icon } from "antd-mobile";
+import { connect } from "react-redux";
 
 class HeaderTitle extends Component {
   static navOptions = {
@@ -23,10 +24,28 @@ class HeaderTitle extends Component {
           level: 1
         };
       case "/":
-        return {
-          title: "警企e通",
-          level: 1
-        };
+        switch (this.props.homeTabs.get('activeTab')) {
+          case "home":
+            return {
+              title: "警企e通",
+              level: 1
+            };
+          case "service":
+            return {
+              title: "江津政务",
+              level: 1
+            };
+          case "my":
+            return {
+              title: "我的",
+              level: 1
+            };
+          default:
+            return {
+              title: "警企e通",
+              level: 1
+            };
+        }
       default:
         return {
           title: "默认",
@@ -39,14 +58,24 @@ class HeaderTitle extends Component {
   }
   render() {
     return (
-        <NavBar
-          mode="dark"
-          leftContent={this.props.location.pathname === '/' ? <div></div> : <Icon onClick={() => this.props.history.goBack()} type="left" />}
-        >
-          {this.renderNavTitle().title}
-        </NavBar>
+      <NavBar
+        mode="dark"
+        leftContent={
+          this.props.location.pathname === "/" ? (
+            <div />
+          ) : (
+            <Icon onClick={() => this.props.history.goBack()} type="left" />
+          )
+        }
+      >
+        {this.renderNavTitle().title}
+      </NavBar>
     );
   }
 }
 
-export default withRouter(HeaderTitle);
+const mapStateToProps = state => ({
+  homeTabs: state.get("homeTabs")
+});
+
+export default withRouter(connect(mapStateToProps)(HeaderTitle));
