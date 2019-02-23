@@ -58,7 +58,8 @@ class HeaderTitle extends Component {
   }
   render() {
     return (
-      <NavBar
+      <div style={{position:"fixed", top: 0, width: '100%',zIndex: 9}}>
+        <NavBar
         mode="dark"
         leftContent={
           this.props.location.pathname === "/" ? (
@@ -70,6 +71,7 @@ class HeaderTitle extends Component {
       >
         {this.renderNavTitle().title}
       </NavBar>
+      </div>
     );
   }
 }
