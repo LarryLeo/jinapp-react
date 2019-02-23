@@ -4,6 +4,7 @@ import { Flex } from "antd-mobile";
 
 import Swiper from "swiper/dist/js/swiper.js";
 import "swiper/dist/css/swiper.min.css";
+import { HomePageWrapper } from "./style";
 
 import slideImage from "../../assets/images/slider.jpg";
 import iconChat from "../../assets/icons/chat.png";
@@ -15,12 +16,27 @@ import bgImgWeather from "../../assets/images/weather.jpg";
 
 import { requestGet } from '../../utils/utils'
 
-import { HomePageWrapper } from "./style";
 
 export default class Home extends Component {
   state = {
-    slideImages: [slideImage, slideImage, slideImage]
+    slideImages: [slideImage, slideImage, slideImage],
+    weather: {},
+    consultNum: ''
   };
+
+  fetchIndexPageData = async() => {
+    let weatherRes = await requestGet({
+      apiUrl: '/app/v1/index/weather'
+    })
+    let consultNumRes = await requestGet({
+      apiUrl: '/app/v1/index/getIndexView'
+    })
+    this.setState({
+      weather: weatherRes.data.weather,
+      consultNum:consultNumRes.data.total_consult_member
+    })
+  }
+
   componentDidMount() {
     // 实例化Swiper
    new Swiper(".swiper-container", {
@@ -30,12 +46,7 @@ export default class Home extends Component {
         clickable: true // 允许点击跳转
       }
     });
-    // 测试异步请求
-    requestGet({
-      apiUrl: '/app/v1/index/weather',
-    }).then(res => {
-      console.log(res)
-    })
+  this.fetchIndexPageData()
   }
   render() {
     return (
@@ -102,8 +113,8 @@ export default class Home extends Component {
         {/* 咨询人数 */}
         <section className="consultInfo">
           <Flex justify="between">
-            <span style={{ fontSize: "16px" }}>152人</span>
-            <a href="#">立即咨询</a>
+            <span style={{ fontSize: "16px" }}>{this.state.consultNum}人</span>
+            <span style={{ fontSize: "16px" }}>立即咨询</span>
           </Flex>
           <p style={{ marginTop: "20px", color: "#9ed5ff" }}>已在警企e通咨询</p>
         </section>
@@ -111,20 +122,10 @@ export default class Home extends Component {
         <section className="weather">
           <img src={bgImgWeather} alt="weather" className="weatherBg" />
           <div className="weatherText">
-            <p className="temp">9~11℃</p>
-            <p className="text">今日天气：小雨</p>
+            <p className="temp">{this.state.weather.temp1}~{this.state.weather.temp2}</p>
+            <p className="text">今日天气：{this.state.weather.weather}</p>
           </div>
         </section>
-        {/* <Link
-          to={{
-            pathname: "/notice",
-            state: {
-              title: "政策宣传"
-            }
-          }}
-        >
-          <p>跳转至政策宣传</p>
-        </Link> */}
       </HomePageWrapper>
     );
   }

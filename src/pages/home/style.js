@@ -4,6 +4,13 @@ export const HomePageWrapper = styled.div`
   background-color: #fff;
   height: 100%;
   padding: 5px 15px;
+  /* 自定义Swiper分页指示器样式 */
+  .swiper-pagination-bullet {
+    background-color: #d9d9d9
+  }
+  .swiper-pagination-bullet-active {
+    background-color: #fff
+  }
   a {
     color: #fff;
   }
@@ -39,10 +46,6 @@ export const HomePageWrapper = styled.div`
     border-radius: 8px;
     color: #fff;
     height: 100px;
-    a {
-      color: #fff;
-      font-size: 16px;
-    }
   }
   /* 天气 */
   .weather {
