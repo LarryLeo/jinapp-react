@@ -59,5 +59,6 @@ a {
 
 .switch-wrapper > div {
   position: absolute;
+  width: 100%;
 }
 `

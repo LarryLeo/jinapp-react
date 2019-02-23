@@ -53,7 +53,7 @@ class BottomTabNavigator extends Component {
   }
   render() {
     return (
-      <div style={{position: 'fixed', width: '100%', height:'calc(100% - 45px)', left: 0, top: '45px'}}>
+      <div style={{height: 'calc(100vh - 45px)'}}>
         <TabBar prerenderingSiblingsNumber={0}>
           <TabBar.Item
             title="首页"

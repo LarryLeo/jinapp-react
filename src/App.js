@@ -4,7 +4,7 @@ import store from './store/index'
 import { Provider } from 'react-redux'
 import { GlobalStyle } from "./style";
 import './App.css'
-import { AnimatedSwitch } from 'react-router-transition'
+import { AnimatedSwitch, AnimatedRoute  } from 'react-router-transition'
 
 import Login from './pages/login/index'
 import Register from './pages/register/index'
@@ -19,6 +19,10 @@ import HeaderTitle from './components/HeaderTitle/index'
 import BottomTabNavigator from './components/BottomTabNavigator/index'
 
 export default class App extends Component {
+  mapStyles = (styles) => ({
+    opacity: styles.opacity,
+    transform: `translateX(${styles.offset}%)`
+  })
   render() {
     const routes = [{
       path: '/',
@@ -39,6 +43,7 @@ export default class App extends Component {
       path: '/contacts',
       component: Contacts
     }]
+
     return (
       <Provider store={store}>
         <BrowserRouter>
@@ -47,9 +52,10 @@ export default class App extends Component {
             <HeaderTitle />
             {/* 一级页面之间Tab导航 , Switch在初次匹配上路由的时候，即停止向后检索*/}
             <AnimatedSwitch
-              atEnter={{ opacity: 0 }}
-              atLeave={{ opacity: 0 }}
-              atActive={{ opacity: 1 }}
+              atEnter={{ opacity: 0, offset: 0}}
+              atLeave={{ opacity: 0, offset: -100}}
+              atActive={{ opacity:1, offset: 0}}
+              mapStyles={this.mapStyles}
               className="switch-wrapper"
             >
               {routes.map((route, index) => <Route exact path={route.path} component={route.component} key={index} />)}
