@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router";
-import { BottomTabGroup } from "./style";
 import { TabBar } from "antd-mobile";
 import { IoMdHome, IoIosBriefcase, IoMdPerson } from "react-icons/io";
 import { connect } from "react-redux";

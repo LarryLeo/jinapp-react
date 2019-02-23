@@ -23,7 +23,7 @@ export default class Home extends Component {
   };
   componentDidMount() {
     // 实例化Swiper
-    var mySwiper = new Swiper(".swiper-container", {
+   new Swiper(".swiper-container", {
       loop: true, //循环
       pagination: {
         el: ".swiper-pagination",
@@ -103,7 +103,7 @@ export default class Home extends Component {
         <section className="consultInfo">
           <Flex justify="between">
             <span style={{ fontSize: "16px" }}>152人</span>
-            <a href="">立即咨询</a>
+            <a href="#">立即咨询</a>
           </Flex>
           <p style={{ marginTop: "20px", color: "#9ed5ff" }}>已在警企e通咨询</p>
         </section>

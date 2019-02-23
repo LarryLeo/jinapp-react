@@ -6,7 +6,7 @@ export const requestGet = ({apiUrl, data={}} = {}) => {
   let url = `${urlPrefix}${apiUrl}?${paramsArr.join('&')}`
 
   return new Promise((resolve, reject) => {
-    window.fetch(url, {
+    fetch(url, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -26,7 +26,7 @@ export const requestPost = ({apiUrl, data={}} = {}) => {
   let url = `${urlPrefix}${apiUrl}?${paramsArr.join('&')}`
 
   return new Promise((resolve, reject) => {
-    window.fetch(url, {
+    fetch(url, {
       method: 'POST',
       headers: {
         Accept: "application/json",

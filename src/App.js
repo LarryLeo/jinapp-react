@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch} from "react-router-dom";
+import { BrowserRouter, Route} from "react-router-dom";
 import store from './store/index'
 import { Provider } from 'react-redux'
 import { GlobalStyle } from "./style";
 import './App.css'
-import { AnimatedSwitch, AnimatedRoute  } from 'react-router-transition'
+import { AnimatedSwitch } from 'react-router-transition'
 
 import Login from './pages/login/index'
 import Register from './pages/register/index'
