@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { ListView, PullToRefresh, Flex, Toast } from "antd-mobile";
 import { connect } from 'react-redux'
-import { cacheNoticeState } from '../../actions/index'
+import { cacheNoticeState, fetchNoticeData, updateNoticeData } from '../../actions/index'
 import { requestGet } from "../../utils/utils";
 
 import { NoticeList } from "./style";
@@ -12,34 +12,7 @@ const dataSource = new ListView.DataSource({
   rowHasChanged: (row1, row2) => row1 !== row2
 });
 class Notice extends Component {
-  state = {
-    noticeData: [], //需这样初始化
-    pn: 1,
-    ps: 10,
-    loading: false,
-    noMoreData: false
-  };
 
-  fetchData = async () => {
-    if(this.state.noMoreData) return Toast.show('没有更多数据', 1)
-    await this.setState({loading: true})
-    let res = await requestGet({
-      apiUrl: "/app/v1/index/articleList",
-      data: {
-        type_id: 3,
-        pn: this.state.pn,
-        ps: this.state.ps
-      }
-    });
-    let list = res.data.list;
-    await this.setState({
-      noticeData: [...this.state.noticeData, ...list],
-      pn:
-        res.data.list.length >= this.state.ps ? ++this.state.pn : this.state.pn,
-      loading: false,
-      noMoreData: list.length < this.state.ps
-    });
-  };
   renderRow = (rowData, sectionId, rowId) => {
     return (
       <Link
@@ -59,19 +32,19 @@ class Notice extends Component {
     );
   };
   componentDidMount() {
-    console.log(this.props.noticeState.toJS())
-    this.fetchData();
+
+    this.props.fetchNoticeData()
   }
 
   componentWillUnmount() {
-    this.props.cacheNoticeState(this.state)
+
   }
 
   render() {
     return (
       <NoticeList>
         <ListView
-          dataSource={dataSource.cloneWithRows(this.state.noticeData)}
+          dataSource={dataSource.cloneWithRows(this.props.noticeState.get('noticeData').toArray())}
           renderRow={this.renderRow}
           renderSeparator={(sId, rId) => (
             <div
@@ -79,7 +52,7 @@ class Notice extends Component {
               key={rId}
             />
           )}
-          pullToRefresh={<PullToRefresh refreshing={this.state.loading} onRefresh={() => this.fetchData()} />}
+          pullToRefresh={<PullToRefresh refreshing={this.props.noticeState.get('loading')} onRefresh={() => this.props.updateNoticeData()} />}
           style={{ height: document.documentElement.clientHeight - 90, width: '100%' }}
         />
       </NoticeList>
@@ -92,7 +65,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  cacheNoticeState
+  cacheNoticeState,
+  fetchNoticeData,
+  updateNoticeData
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notice)
