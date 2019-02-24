@@ -1,3 +1,4 @@
+import { Toast } from 'antd-mobile'
 
 export const requestGet = ({apiUrl, data={}} = {}) => {
   const urlPrefix = 'http://jz.test.chimukeji.com'
@@ -6,15 +7,18 @@ export const requestGet = ({apiUrl, data={}} = {}) => {
   let url = `${urlPrefix}${apiUrl}?${paramsArr.join('&')}`
 
   return new Promise((resolve, reject) => {
+    Toast.loading('Loading...')
     fetch(url, {
       method: 'GET',
     })
       .then(response => response.json())
       .then(result => {
         resolve(result)
+        Toast.hide()
       })
       .catch(error => {
         reject(error)
+        Toast.hide()
       })
   })
 }
