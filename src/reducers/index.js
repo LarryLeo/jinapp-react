@@ -4,13 +4,20 @@ import * as types from '../actions/actionTypes'
 
 // Tab导航激活Tab数据
 const homeTabsInitialState = fromJS({
-  activeTab: 'home'
+  activeTab: 'home',
+  weather: {},
+  consultNum: 0
 })
 const homeTabs = (state = homeTabsInitialState, action) => {
   switch (action.type) {
     case types.SWITCH_HOME_TAB:
       return state.merge({
         activeTab: action.activeTab
+      })
+    case types.CACHE_HOME_DATA:
+      return state.mergeDeep({
+        weather: action.state.weather,
+        consultNum: action.state.consultNum
       })
     default:
       return state

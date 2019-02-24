@@ -47,7 +47,6 @@ class BottomTabNavigator extends Component {
     }
   };
   componentDidMount() {
-    console.log(this.props);
   }
   render() {
     return (

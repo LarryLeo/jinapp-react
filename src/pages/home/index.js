@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Flex } from "antd-mobile";
+import { connect } from 'react-redux'
+import { cacheHomeState } from '../../actions/index'
 
 import Swiper from "swiper/dist/js/swiper.js";
 import "swiper/dist/css/swiper.min.css";
@@ -17,7 +19,7 @@ import bgImgWeather from "../../assets/images/weather.jpg";
 import { requestGet } from '../../utils/utils'
 
 
-export default class Home extends Component {
+class Home extends Component {
   state = {
     slideImages: [slideImage, slideImage, slideImage],
     weather: {},
@@ -46,7 +48,17 @@ export default class Home extends Component {
         clickable: true // 允许点击跳转
       }
     });
+  if(this.props.homeTabs.get('weather').size) {
+    const state = this.props.homeTabs.toJS()
+    return this.setState({
+     weather: state.weather,
+     consultNum: state.consultNum
+    })
+  }
   this.fetchIndexPageData()
+  }
+  componentWillUnmount() {
+    this.props.cacheHomeState(this.state)
   }
   render() {
     return (
@@ -130,3 +142,14 @@ export default class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  homeTabs: state.get('homeTabs')
+})
+
+const mapDispatchToProps = {
+  cacheHomeState,
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

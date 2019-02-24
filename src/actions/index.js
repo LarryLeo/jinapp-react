@@ -1,9 +1,15 @@
 import { requestGet } from '../utils/utils'
 import * as types from './actionTypes'
 
+// 处理首页数据
 export const switchHomeTabs = (activeTab) => ({
   type: types.SWITCH_HOME_TAB,
   activeTab,
+})
+
+export const cacheHomeState = (state)=> ({
+  type: types.CACHE_HOME_DATA,
+  state
 })
 
 // 处理Notice页面数据获取逻辑
@@ -24,7 +30,6 @@ export const updateNoticeData = () => {
 }
 
 export const fetchNoticeData = () => {
-  console.log('ddd')
   return async(dispatch, getState) => {
     let noticeState = getState().get('noticeState')
     if(noticeState.get('noMoreData')) return

@@ -10,6 +10,7 @@ export const requestGet = ({apiUrl, data={}} = {}) => {
     Toast.loading('Loading...')
     fetch(url, {
       method: 'GET',
+      mode: 'cors'
     })
       .then(response => response.json())
       .then(result => {
