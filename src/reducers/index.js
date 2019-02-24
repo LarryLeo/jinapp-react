@@ -16,7 +16,22 @@ const homeTabs = (state = homeTabsInitialState, action) => {
       return state
   }
 }
+const noticeState = (state = fromJS({
+  noticeData: [],
+    pn: 1,
+    ps: 10,
+    loading: false,
+    noMoreData: false
+}), action) => {
+  switch (action.type) {
+    case types.CACHE_NOTICE_DATA:
+      return state.merge(action.state)
+    default:
+      return state
+  }
+}
 
 export default combineReducers({
   homeTabs,
+  noticeState
 })

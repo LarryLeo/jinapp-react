@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { ListView, PullToRefresh, Flex, Toast } from "antd-mobile";
+import { connect } from 'react-redux'
+import { cacheNoticeState } from '../../actions/index'
 import { requestGet } from "../../utils/utils";
 
 import { NoticeList } from "./style";
@@ -9,7 +11,7 @@ import iconNotice from "../../assets/images/notice-icon.jpg";
 const dataSource = new ListView.DataSource({
   rowHasChanged: (row1, row2) => row1 !== row2
 });
-export default class Notice extends Component {
+class Notice extends Component {
   state = {
     noticeData: [], //需这样初始化
     pn: 1,
@@ -19,7 +21,7 @@ export default class Notice extends Component {
   };
 
   fetchData = async () => {
-    if(this.state.noMoreData) return Toast.show('没有更多数据')
+    if(this.state.noMoreData) return Toast.show('没有更多数据', 1)
     await this.setState({loading: true})
     let res = await requestGet({
       apiUrl: "/app/v1/index/articleList",
@@ -43,7 +45,10 @@ export default class Notice extends Component {
       <Link
         to={{
           pathname: "/notice/detail",
-          search: `id=${rowData.id}`
+          search: `id=${rowData.id}`,
+          state: {
+            title: '详情'
+          }
         }}
       >
         <Flex style={{ padding: "10px 15px" }}>
@@ -54,7 +59,12 @@ export default class Notice extends Component {
     );
   };
   componentDidMount() {
+    console.log(this.props.noticeState.toJS())
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this.props.cacheNoticeState(this.state)
   }
 
   render() {
@@ -76,3 +86,13 @@ export default class Notice extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  noticeState: state.get('noticeState')
+})
+
+const mapDispatchToProps = {
+  cacheNoticeState
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notice)
