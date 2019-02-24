@@ -7,7 +7,7 @@ import { requestGet } from "../../utils/utils";
 
 import { NoticeList } from "./style";
 import iconNotice from "../../assets/images/notice-icon.jpg";
-
+// todo 上滑加载更多，目前数据量还不够，暂时搁置
 const dataSource = new ListView.DataSource({
   rowHasChanged: (row1, row2) => row1 !== row2
 });
@@ -20,7 +20,8 @@ class Notice extends Component {
           pathname: "/notice/detail",
           search: `id=${rowData.id}`,
           state: {
-            title: '详情'
+            title: '详情',
+            data: rowData
           }
         }}
       >
