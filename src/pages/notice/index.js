@@ -31,15 +31,19 @@ class Notice extends Component {
       </Link>
     );
   };
+  _renderFooter = () => {
+    if(this.props.noticeState.get('noMoreData')) {
+      return (
+        <p style={{textAlign: 'center'}}>没有更多数据了</p>
+      )
+    } else {
+      return <span></span>
+    }
+  }
   componentDidMount() {
 
     this.props.fetchNoticeData()
   }
-
-  componentWillUnmount() {
-
-  }
-
   render() {
     return (
       <NoticeList>
@@ -52,6 +56,7 @@ class Notice extends Component {
               key={rId}
             />
           )}
+          renderFooter={() => this._renderFooter()}
           pullToRefresh={<PullToRefresh refreshing={this.props.noticeState.get('loading')} onRefresh={() => this.props.updateNoticeData()} />}
           style={{ height: document.documentElement.clientHeight - 90, width: '100%' }}
         />
