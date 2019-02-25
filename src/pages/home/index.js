@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Flex } from "antd-mobile";
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { connect } from 'react-redux'
 import { cacheHomeState } from '../../actions/index'
 
-import Swiper from "swiper/dist/js/swiper.js";
-import "swiper/dist/css/swiper.min.css";
+
 import { HomePageWrapper } from "./style";
 
 import slideImage from "../../assets/images/slider.jpg";
@@ -40,14 +41,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    // 实例化Swiper
-   new Swiper(".swiper-container", {
-      loop: true, //循环
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true // 允许点击跳转
-      }
-    });
+
   if(this.props.homeTabs.get('weather').size) {
     const state = this.props.homeTabs.toJS()
     return this.setState({
@@ -63,20 +57,15 @@ class Home extends Component {
   render() {
     return (
       <HomePageWrapper>
-        <section className="swiper-container">
-          <div className="swiper-wrapper">
-            {this.state.slideImages.map((slide, index) => (
-              <div className="swiper-slide" key={index}>
-                <img
-                  className="slideImg"
-                  style={{ width: "100%" }}
-                  src={slide}
-                  alt="slide"
-                />
-              </div>
-            ))}
-          </div>
-          <div className="swiper-pagination" />
+        <section className='slider'>
+          <Carousel
+            showArrows={false}
+            showStatus={false}
+            showThumbs={false}
+            infiniteLoop={true}
+          >
+            {this.state.slideImages.map((slide, index) => <img src={slide} alt='slide' className='slideImg' key={index} />)}
+          </Carousel>
         </section>
         {/* 功能导航  */}
         <section className="menuGrid">
@@ -110,16 +99,20 @@ class Home extends Component {
               </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#ff5555" }}>
-              <Flex justify="center">
-                <img className="menuIcon" src={iconSuggestion} alt="" />
-                <span>意见建议</span>
+              <Link to={{pathname: '/make/suggestion', state: {title: '意见建议'}}}>
+                <Flex justify="center">
+                  <img className="menuIcon" src={iconSuggestion} alt="" />
+                  <span>意见建议</span>
               </Flex>
+              </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#00c9db" }}>
-              <Flex justify="center">
-                <img className="menuIcon" src={iconConsult} alt="" />
-                <span>求助咨询</span>
+              <Link to={{pathname: '/make/consultation', state: {title: '求助咨询'}}}>
+                <Flex justify="center">
+                  <img className="menuIcon" src={iconConsult} alt="" />
+                  <span>求助咨询</span>
               </Flex>
+              </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#007aff" }}>
               <Flex justify="center">

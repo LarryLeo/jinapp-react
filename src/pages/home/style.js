@@ -4,18 +4,18 @@ export const HomePageWrapper = styled.div`
   background-color: #fff;
   height: 100%;
   padding: 5px 15px;
-  /* 自定义Swiper分页指示器样式 */
-  .swiper-pagination-bullet {
-    background-color: #d9d9d9
-  }
-  .swiper-pagination-bullet-active {
-    background-color: #fff
-  }
   a {
     color: #fff;
   }
-  .swiper-container {
+  .slider {
     height: 150px;
+    .control-dots .dot {
+      box-shadow: none
+
+    }
+    .slideImg {
+      width: 100%;
+    }
   }
   /* 功能导航 */
   .menuGrid {
