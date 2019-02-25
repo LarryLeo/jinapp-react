@@ -97,10 +97,17 @@ class Home extends Component {
               </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#ffa800" }}>
-              <Flex justify="center">
-                <img className="menuIcon" src={iconGuide} alt="" />
-                <span>办事指南</span>
-              </Flex>
+              <Link to={{
+                pathname: '/guide',
+                state: {
+                  title: '办事指南'
+                }
+              }}>
+                <Flex justify="center">
+                  <img className="menuIcon" src={iconGuide} alt="" />
+                  <span>办事指南</span>
+                </Flex>
+              </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#ff5555" }}>
               <Flex justify="center">

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { ListView, PullToRefresh, Flex } from "antd-mobile";
 import { connect } from 'react-redux'
-import { cacheNoticeState, fetchNoticeData, updateNoticeData } from '../../actions/index'
+import { fetchNoticeData, updateNoticeData } from '../../actions/index'
 
 
 import { NoticeList } from "./style";
@@ -71,7 +71,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  cacheNoticeState,
   fetchNoticeData,
   updateNoticeData
 }

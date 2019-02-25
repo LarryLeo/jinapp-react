@@ -12,11 +12,14 @@ import NotFound from './pages/NoFound/index'
 
 import Notice from './pages/notice/index'
 import NoticeDetail from './pages/notice/noticeDetail/index'
+import Guide from "./pages/guide";
+import GuideDetail from './pages/guide/guideDetail'
 
 import Contacts from './pages/serviceNav/contacts/index'
 
 import HeaderTitle from './components/HeaderTitle/index'
 import BottomTabNavigator from './components/BottomTabNavigator/index'
+
 
 export default class App extends Component {
   mapStyles = (styles) => ({
@@ -42,6 +45,12 @@ export default class App extends Component {
     }, {
       path: '/contacts',
       component: Contacts
+    }, {
+      path: '/guide',
+      component: Guide
+    }, {
+      path: '/guide/detail',
+      component: GuideDetail
     }]
 
     return (

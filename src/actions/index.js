@@ -46,8 +46,23 @@ export const fetchNoticeData = () => {
     dispatch(receiveNoticeData(list))
   }
 }
-
-export const cacheNoticeState = (state) => ({
-  type: types.CACHE_NOTICE_DATA,
-  state: state
+// 办事指南
+const requestGuideData = () => ({
+  type: types.REQUEST_GUIDE_DATA
 })
+const receiveGuideData = (list) => ({
+  type: types.RECEIVE_GUIDE_DATA,
+  list
+})
+export const fetchGuideData = () => {
+  return async(dispatch, getState) => {
+    dispatch(requestGuideData())
+    let res = await requestGet({
+      apiUrl: '/app/v1/guide/getGuideList',
+      data: {
+        filter: 'common'
+      }
+    });
+    return dispatch(receiveGuideData(res.data.list))
+  }
+}
