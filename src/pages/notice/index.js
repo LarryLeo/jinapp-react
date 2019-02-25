@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { ListView, PullToRefresh, Flex, Toast } from "antd-mobile";
+import { ListView, PullToRefresh, Flex } from "antd-mobile";
 import { connect } from 'react-redux'
 import { cacheNoticeState, fetchNoticeData, updateNoticeData } from '../../actions/index'
-import { requestGet } from "../../utils/utils";
+
 
 import { NoticeList } from "./style";
 import iconNotice from "../../assets/images/notice-icon.jpg";

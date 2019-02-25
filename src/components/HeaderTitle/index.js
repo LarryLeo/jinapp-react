@@ -53,7 +53,7 @@ class HeaderTitle extends Component {
     }
   };
   componentDidMount() {
-    console.log("我只会调用一次, 路由导航不会remount");
+
   }
   render() {
     return (

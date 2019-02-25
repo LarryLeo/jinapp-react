@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux-immutable'
-import { fromJS, List, Map } from 'immutable'
+import { fromJS, List} from 'immutable'
 import * as types from '../actions/actionTypes'
 
 // Tab导航激活Tab数据
