@@ -81,8 +81,28 @@ const guide = (state=fromJS({
       return state
   }
 }
+// 提建议，咨询
+export const makeCenter = (state=fromJS({
+  unitList: [],
+  consultSubjectList: []
+}), action) => {
+  switch (action.type) {
+    case types.FETCH_UNIT_LIST:
+      return state.mergeDeep({
+        unitList: action.list
+      })
+    case types.FETCH_CONSULT_SUBJECT:
+      return state.mergeDeep({
+        consultSubjectList: action.list
+      })
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   homeTabs,
   noticeState,
-  guide
+  guide,
+  makeCenter
 });

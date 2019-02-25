@@ -2,25 +2,9 @@ import React, { Component } from "react";
 import { MakeWrapper } from "./style";
 import { Flex, Picker, Button } from "antd-mobile";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
+import { fetchUnitList, fetchConsultSubject } from '../../actions/index'
 
-const mockData = [
-  {
-    label: "AA",
-    value: "aa"
-  },
-  {
-    label: "公安",
-    value: "14"
-  },
-  {
-    label: "AA",
-    value: "aa"
-  },
-  {
-    label: "AA",
-    value: "aa"
-  }
-];
 const PickerChildren = props => (
   <div onClick={props.onClick} className="pickerChildren">
     <div className="inlineWrapper">
@@ -29,9 +13,13 @@ const PickerChildren = props => (
     </div>
   </div>
 );
-export default class Make extends Component {
+class Make extends Component {
   state = {
-    currentPage: ""
+    currentPage: "",
+    unitPickerData: [],
+    selectedUnit: '',
+    consultSubjectPickerData: [],
+    selectedConsultSubject: ''
   };
   renderHistoryJump = () => {
     switch (this.state.currentPage) {
@@ -77,12 +65,26 @@ export default class Make extends Component {
     }
   };
   componentDidMount() {
+    // redux中未缓存单位列表即请求数据
+    !this.props.unitList.length && this.props.fetchUnitList()
     const {
       params: { type }
     } = this.props.match;
     this.setState({
-      currentPage: type
+      currentPage: type,
     });
+  }
+  componentWillReceiveProps(nextProps) {
+    if(this.props !== nextProps) {
+      // 将数据转换为Picker支持的label + Value类型
+      let unitPickerData = nextProps.unitList.map(item => ({
+        label: item.unit_name,
+        value: item.id
+      }))
+      this.setState({
+        unitPickerData
+      })
+    }
   }
   render() {
     return (
@@ -92,9 +94,10 @@ export default class Make extends Component {
         </Flex>
         <div className="picker">
           <Picker
-            data={mockData}
-            value={["14"]}
+            data={this.state.unitPickerData}
+            value={this.state.selectedUnit}
             cols={1}
+            onChange={(val) => this.setState({selectedUnit: val})}
             extra="请选择意见对象"
           >
             <PickerChildren>
@@ -105,8 +108,10 @@ export default class Make extends Component {
         </div>
         <div className="picker consultItemPicker">
           <Picker
-            data={mockData}
-            value={["14"]}
+            data={this.state.consultSubjectPickerData}
+            value={this.state.selectedConsultSubject}
+            onChange={val => this.setState({selectedConsultSubject: val})}
+            disabled={!this.state.selectedUnit.length || !this.state.consultSubjectPickerData.length}
             cols={1}
             extra="请选择意见对象"
           >
@@ -138,3 +143,15 @@ export default class Make extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  unitList: state.getIn(['makeCenter', 'unitList']).toArray(),
+  consultSubjectList: state.getIn(['makeCenter', 'consultSubjectList']).toArray()
+})
+
+const mapDispatchToProps = {
+  fetchUnitList,
+  fetchConsultSubject
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Make)

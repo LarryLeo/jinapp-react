@@ -66,3 +66,30 @@ export const fetchGuideData = () => {
     return dispatch(receiveGuideData(res.data.list))
   }
 }
+//提建议，咨询
+export const fetchUnitList = () => {
+  return async(dispatch, getState) => {
+    let res = await requestGet({apiUrl: '/app/v1/index/getUnitList'})
+    res.success && dispatch({
+      type: types.FETCH_UNIT_LIST,
+      list: res.data.list
+    })
+  }
+}
+export const fetchConsultSubject = (unitId) => {
+  return async(dispatch, getState) => {
+    let userCredential = JSON.parse(localStorage.getItem('userCredential'))
+    let res = await requestGet({
+      apiUrl: '/app/v1/consult/getConsultSubjectList',
+      data: {
+        member_id: userCredential.member_id,
+        member_token: userCredential.member_token,
+        unitId,
+      }
+    })
+    res.success && dispatch({
+      type: types.FETCH_CONSULT_SUBJECT,
+      list: res.data.list
+    })
+  }
+}
