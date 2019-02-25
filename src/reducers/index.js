@@ -92,9 +92,8 @@ export const makeCenter = (state=fromJS({
         unitList: action.list
       })
     case types.FETCH_CONSULT_SUBJECT:
-      return state.mergeDeep({
-        consultSubjectList: action.list
-      })
+      return state.set('consultSubjectList', List(action.list))
+      // 这里不能merge, 因为是一个刷新操作
     default:
       return state
   }
