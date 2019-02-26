@@ -85,7 +85,7 @@ class Make extends Component {
     let userCredential = JSON.parse(localStorage.getItem('userCredential'))
     let apiUrl = this.state.currentPage === 'suggestion' ? '/app/v1/suggestion/addSuggestion' : '/app/v1/consult/addConsult'
     let data = {
-      unit_id: this.state.selectUnitId,
+      unit_id: this.state.selectedUnit.toString(),
       title: this.state.title,
       content: this.state.content,
       member_id: userCredential.member_id,
@@ -93,7 +93,7 @@ class Make extends Component {
     }
     let res = await requestPost({
       apiUrl: apiUrl,
-      data: this.state.currentPage === 'suggestion' ? data : {...data, consult_subject_id: this.state.selectedConsultSubject}
+      data: this.state.currentPage === 'suggestion' ? data : {...data, consult_subject_id: this.state.selectedConsultSubject.toString()}
     })
     res.success && Toast.success('发送成功')
     !res.success && Toast.fail('发送失败')

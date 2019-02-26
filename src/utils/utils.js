@@ -1,7 +1,7 @@
 import { Toast } from 'antd-mobile'
 
 export const requestGet = ({apiUrl, data={}} = {}) => {
-  const urlPrefix = 'http://jz.test.chimukeji.com'
+  const urlPrefix = ''
   let paramsArr = []
   Object.keys(data).forEach((key) => paramsArr.push(`${key}=${data[key]}`))
   let url = `${urlPrefix}${apiUrl}?${paramsArr.join('&')}`
@@ -25,7 +25,7 @@ export const requestGet = ({apiUrl, data={}} = {}) => {
 }
 
 export const requestPost = ({apiUrl, data={}} = {}) => {
-  const urlPrefix = 'http://jz.test.chimukeji.com'
+  const urlPrefix = ''
   let paramsArr = []
   Object.keys(data).forEach((key) => paramsArr.push(`${key}=${data[key]}`))
   let url = `${urlPrefix}${apiUrl}?${paramsArr.join('&')}`
