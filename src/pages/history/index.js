@@ -56,7 +56,8 @@ class History extends Component {
           pathname: "history/suggestion-detail",
           search: `?suggestion_id=${rData.id}`,
           state: {
-            title: '我的建议'
+            title: '我的建议',
+            rData
           }
         }}
       >
@@ -90,7 +91,8 @@ class History extends Component {
           pathname: "history/consultation-detail",
           search: `?consult_id=${rData.id}`,
           state: {
-            title: '我的咨询'
+            title: '我的咨询',
+            rData
           }
         }}
       >
