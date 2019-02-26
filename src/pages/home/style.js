@@ -8,7 +8,7 @@ export const HomePageWrapper = styled.div`
     color: #fff;
   }
   .slider {
-    height: 150px;
+    height: 145px;
     .control-dots .dot {
       box-shadow: none
 

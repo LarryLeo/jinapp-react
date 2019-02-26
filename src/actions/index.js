@@ -1,6 +1,8 @@
 import { requestGet } from '../utils/utils'
 import * as types from './actionTypes'
 
+// 提取用户凭据
+const userCredential = JSON.parse(localStorage.getItem('userCredential'))
 // 处理首页数据
 export const switchHomeTabs = (activeTab) => ({
   type: types.SWITCH_HOME_TAB,
@@ -78,7 +80,6 @@ export const fetchUnitList = () => {
 }
 export const fetchConsultSubject = (unitId) => {
   return async(dispatch, getState) => {
-    let userCredential = JSON.parse(localStorage.getItem('userCredential'))
     let res = await requestGet({
       apiUrl: '/app/v1/consult/getConsultSubjectList',
       data: {
@@ -91,5 +92,41 @@ export const fetchConsultSubject = (unitId) => {
       type: types.FETCH_CONSULT_SUBJECT,
       list: res.data.list
     })
+  }
+}
+
+// 我的历史记录
+const receiveHistoryData = (calledName, list) => ({
+  type: types.RECEIVE_HISTORY_DATA,
+  calledName,
+  list
+})
+export const updateHistory = (calledName) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: types.UPDATE_HISTORY_DATA,
+      calledName
+    })
+    return dispatch(requestHistoryData(calledName))
+  }
+}
+export const requestHistoryData = (calledName) => {
+  return async(dispatch, getState) => {
+    // 判断是否应该请求
+    if(getState().getIn([calledName, 'noMoreData'])) return
+    dispatch({type: types.REQUEST_HISTORY_DATA, calledName})
+    // 判断请求参数
+    let apiUrl = calledName === 'mySuggestions' ? '/app/v1/suggestion/mySuggestionList' : '/app/v1/consult/myConsultList'
+    let data = {
+      member_id: userCredential.member_id,
+      member_token: userCredential.member_token,
+      pn: getState().getIn([calledName, 'pn']),
+      ps: getState().getIn([calledName, 'ps']),
+    }
+    let res = await requestGet({
+      apiUrl,
+      data
+    })
+    res.success && dispatch(receiveHistoryData(calledName, res.data.list))
   }
 }

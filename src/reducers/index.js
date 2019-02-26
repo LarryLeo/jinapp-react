@@ -98,10 +98,57 @@ export const makeCenter = (state=fromJS({
       return state
   }
 }
+// 我的记录，建议和咨询
+const historyInitialState = fromJS({
+  pn: 1,
+  ps: 5,
+  loading: false,
+  noMoreData: false,
+  data: []
+})
+const historyDataGenerator = (state=historyInitialState, action) => {
+  let pn = state.get('pn'),
+      ps = state.get('ps');
+  switch (action.type) {
+    case types.REQUEST_HISTORY_DATA:
+      return state.merge({
+        loading: true
+      })
+    case types.RECEIVE_HISTORY_DATA:
+      return state.mergeDeep({
+        loading: false,
+        data: action.list,
+        pn: action.list.length >= ps ? ++pn : pn,
+        noMoreData: action.list.length < ps
+      })
+    case types.UPDATE_HISTORY_DATA:
+      return state.merge({
+        pn: 1,
+        data: List(),
+        noMoreData: false
+      })
+    default:
+      return state
+  }
+}
+// reducer工厂
+const reducerFactory = (reducerName, reducerFunctionName) => {
+  return (state, action) => {
+    const {calledName} = action
+    const isInitializeCall = state === undefined
+    if(calledName !== reducerName && !isInitializeCall) {
+      return state
+    }
+    // 这个自制的工厂函数也是一个大的reducer，一旦有dispatch的时候，它便会激活
+    return reducerFunctionName(state, action)
+  }
+}
 
 export default combineReducers({
   homeTabs,
   noticeState,
   guide,
-  makeCenter
+  makeCenter,
+  mySuggestions: reducerFactory('mySuggestions', historyDataGenerator),
+  myConsultations: reducerFactory('myConsultations', historyDataGenerator)
 });
