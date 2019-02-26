@@ -84,7 +84,7 @@ export const fetchConsultSubject = (unitId) => {
       data: {
         member_id: userCredential.member_id,
         member_token: userCredential.member_token,
-        unitId,
+        unit_id: unitId
       }
     })
     res.success && dispatch({
