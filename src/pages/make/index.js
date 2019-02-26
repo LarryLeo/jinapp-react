@@ -32,9 +32,10 @@ class Make extends Component {
         return (
           <Link
             to={{
-              pathname: "/my/history/suggestions",
+              pathname: "/my/history",
               state: {
-                title: "我的历史"
+                title: "我的历史",
+                selectedIndex: 0
               }
             }}
           >
@@ -45,9 +46,10 @@ class Make extends Component {
         return (
           <Link
             to={{
-              pathname: "/my/history/consultations",
+              pathname: "/my/history",
               state: {
-                title: "我的历史"
+                title: "我的历史",
+                selectedIndex: 1
               }
             }}
           >
@@ -58,9 +60,10 @@ class Make extends Component {
         return (
           <Link
             to={{
-              pathname: "/my/history/suggestions",
+              pathname: "/my/history",
               state: {
-                title: "我的历史"
+                title: "我的历史",
+                selectedIndex: 0
               }
             }}
           >
@@ -80,7 +83,7 @@ class Make extends Component {
     if(!this.state.selectedUnit.length) return Toast.show('请选择单位')
     if(this.state.currentPage === 'consultation' && !this.state.selectedConsultSubject.length) return Toast.show('请选择咨询事项')
     if(!this.state.title.length) return Toast.show('请填写标题')
-    if(!this.state.title.length) return Toast.show('请填写内容')
+    if(!this.state.content.length) return Toast.show('请填写内容')
 
     let userCredential = JSON.parse(localStorage.getItem('userCredential'))
     let apiUrl = this.state.currentPage === 'suggestion' ? '/app/v1/suggestion/addSuggestion' : '/app/v1/consult/addConsult'

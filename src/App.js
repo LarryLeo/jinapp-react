@@ -15,6 +15,7 @@ import NoticeDetail from './pages/notice/noticeDetail/index'
 import Guide from "./pages/guide";
 import GuideDetail from './pages/guide/guideDetail'
 import Make from './pages/make'
+import History from './pages/history/index'
 
 import Contacts from './pages/serviceNav/contacts/index'
 
@@ -55,6 +56,9 @@ export default class App extends Component {
     }, {
       path: '/make/:type',
       component: Make
+    }, {
+      path: '/my/history',
+      component: History
     }]
 
     return (
