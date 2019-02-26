@@ -35,7 +35,7 @@ class Make extends Component {
               pathname: "/my/history",
               state: {
                 title: "我的历史",
-                selectedIndex: 0
+                initialPage: 0
               }
             }}
           >
@@ -49,7 +49,7 @@ class Make extends Component {
               pathname: "/my/history",
               state: {
                 title: "我的历史",
-                selectedIndex: 1
+                initialPage: 1
               }
             }}
           >
@@ -63,7 +63,7 @@ class Make extends Component {
               pathname: "/my/history",
               state: {
                 title: "我的历史",
-                selectedIndex: 0
+                initialPage: 0
               }
             }}
           >
