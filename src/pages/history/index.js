@@ -54,9 +54,13 @@ class History extends Component {
       <Link
         to={{
           pathname: "history/suggestion-detail",
-          search: `?suggestion_id=${rData.id}`,
+          search: `?id=${rData.id}`,
           state: {
             title: '我的建议',
+            apiUrl: '/app/v1/suggestion/getReplyList',
+            apiParams: {
+              suggestion_id: rData.id
+            },
             rData
           }
         }}
@@ -89,9 +93,13 @@ class History extends Component {
       <Link
         to={{
           pathname: "history/consultation-detail",
-          search: `?consult_id=${rData.id}`,
+          search: `?id=${rData.id}`,
           state: {
             title: '我的咨询',
+            apiUrl: '/app/v1/consult/getReplyList',
+            apiParams: {
+              consult_id: rData.id
+            },
             rData
           }
         }}
