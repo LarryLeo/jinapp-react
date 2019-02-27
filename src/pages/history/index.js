@@ -59,10 +59,12 @@ class History extends Component {
             title: '我的建议',
             apiUrl: '/app/v1/suggestion/getReplyList',
             askUrl: '/app/v1/suggestion/addReply',
+            rateUrl: '/app/v1/suggestion/finishReply',
             apiParams: {
               suggestion_id: rData.id
             },
-            rData
+            rData,
+            calledName: 'mySuggestions'
           }
         }}
       >
@@ -99,10 +101,12 @@ class History extends Component {
             title: '我的咨询',
             apiUrl: '/app/v1/consult/getReplyList',
             askUrl: '/app/v1/consult/addReply',
+            rateUrl: '/app/v1/consult/finishReply',
             apiParams: {
               consult_id: rData.id
             },
-            rData
+            rData,
+            calledName: 'myConsultations'
           }
         }}
       >

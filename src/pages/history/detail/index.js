@@ -2,18 +2,23 @@ import React, { Component } from "react";
 import { Flex, ListView, Button, Modal, Toast } from "antd-mobile";
 import { IoIosStarOutline, IoIosStar } from "react-icons/io";
 import { requestGet, requestPost } from '../../../utils/utils'
+import { connect } from 'react-redux';
+import { updateHistory } from '../../../actions/index'
+
 import { Wrapper, RateModal } from "./style";
 import avatarPlaceHolder from '../../../assets/images/avatar.jpg'
+import coverRate from '../../../assets/images/rate-cover.png'
 
 const userCredential = JSON.parse(localStorage.getItem('userCredential'))
 const dataSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2
 })
 const prompt = Modal.prompt
-export default class HistoryDetail extends Component {
+class HistoryDetail extends Component {
   state = {
     replyList: [],
-    showRateModal: false
+    showRateModal: false,
+    starsOnNum: 5
   }
   // 渲染状态
   handleStatus = item => {
@@ -31,23 +36,27 @@ export default class HistoryDetail extends Component {
     );
   };
   // 渲染评分
-  handleRating = (item, actionType) => {
+  handleRating = (onNum, actionType) => {
     const defaultStarsNum = 5;
     // 默认显示5个空白五星
     const starsTotalArr = [1, 2, 3, 4, 5];
     // 一个长度等于默认星星总数的dummy数组，用于map渲染
-    const starsOnNum = item.star;
+    const starsOnNum = onNum;
     // 传入的点亮的星数
     const starsOnNumArr = starsTotalArr.slice(defaultStarsNum - starsOnNum);
     const starsOffNumArr = starsTotalArr.slice(starsOnNum);
-
+    let iconSize = actionType ? 24 : 16;
     return (
       <div className="rate">
         {starsOnNumArr.map((star, index) => (
-          <IoIosStar size={16} color="#FF943E" key={index} />
+          <IoIosStar size={iconSize} color="#FF943E" key={index} onClick={() => this.setState({
+            starsOnNum: index + 1
+          })} />
         ))}
         {starsOffNumArr.map((star, index) => (
-          <IoIosStarOutline size={16} color="#bbbbbb" key={index} />
+          <IoIosStarOutline size={iconSize} color="#bbbbbb" key={index} onClick={() => this.setState({
+            starsOnNum: this.state.starsOnNum + index + 1
+          })} />
         ))}
       </div>
     );
@@ -103,6 +112,23 @@ export default class HistoryDetail extends Component {
       }
     })
   })
+  submitRate = async() => {
+    const {state:{rateUrl, apiParams, calledName}} = this.props.location
+    let res = await requestPost({
+      apiUrl: rateUrl,
+      data: {...apiParams, ...userCredential, star: this.state.starsOnNum}
+    })
+    if(res.success) {
+      Toast.success('提交成功')
+      this.props.updateHistory(calledName)
+      this.toggleRateModal()
+      setTimeout(() => {
+        this.props.history.goBack()
+      }, 1000);
+    } else {
+    Toast.fail('提交失败')
+    }
+  }
   toggleRateModal = () => {
      this.setState({showRateModal: !this.state.showRateModal})
   }
@@ -138,7 +164,7 @@ export default class HistoryDetail extends Component {
           </Flex>
           <Flex>
             <span style={{marginBottom: 0}} className="key">评分</span>
-            {this.handleRating(rData)}
+            {this.handleRating(rData.star)}
           </Flex>
         </section>
         <section className='replyList'>
@@ -166,10 +192,23 @@ export default class HistoryDetail extends Component {
           onClick={() => this.toggleRateModal()}
           >
           <div onClick={(e) => e.stopPropagation()} className='rateWindow'>
-
+            <img className='cover' src={coverRate} alt="coverRate"/>
+            <span className='title'>问题已解决</span>
+            <span className='desc'>感谢您的参与</span>
+            <span className='desc'>请为我们的服务做出评价</span>
+            <div className='star'>
+              {this.handleRating(this.state.starsOnNum, 'userStar')}
+            </div>
+            <Button onClick={() => this.submitRate()} type='primary' size='small'>提交评价</Button>
           </div>
         </RateModal>
       </Wrapper>
     );
   }
 }
+
+const mapDispatchToProps = {
+  updateHistory
+}
+
+export default connect(null, mapDispatchToProps)(HistoryDetail)

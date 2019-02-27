@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-
+import styled, { keyframes  } from 'styled-components'
+import { fadeIn } from 'react-animations'
+const rateAni = keyframes`${fadeIn}`
 export const Wrapper = styled.div`
-position: relative;
 .am-list-body {
     padding-bottom: 30px;
     background-color: #f5f6fa;
@@ -80,22 +80,43 @@ position: relative;
 
 export const RateModal = styled.div`
   /* 自定义modal样式 */
-  display: ${props => props.visible ? 'block' : 'none'};
+    display: ${props => props.visible ? 'block' : 'none'};
     position: fixed;
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.2);
+    color: #888;
+    background-color: rgba(0,0,0,0.4);
     z-index: 9;
     .rateWindow {
+      animation: .5s ${rateAni};
       position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       background-color: #fff;
-      height:250px;
-      width: 200px;
+      padding-bottom:10px;
+      width: 250px;
       border-radius: 10px;
+      overflow: hidden;
+    }
+    .cover {
+      height: 40%;
+      width: 100%;
+    }
+    .title {
+      font-size: 16px;
+      margin: 10px;
+    }
+    .desc {
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+    .star {
+      margin: 10px;
     }
 `
