@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>事件冒泡测试</title>
+</head>
+<body>
+  <div id="parent" style="width: 400px; height: 300px; background-color: blue;">
+    <div onclick="event.stopPropagation()" id="child" style="width: 200px; height: 100px; background-color: yellow;"></div>
+  </div>
+  <script>
+  var parent = document.querySelector('#parent');
+  var child = document.querySelector('#child')
+  parent.addEventListener('click', function(e) {
+    e.stopPropagation()
+    console.log('点击父元素', e.target.id)
+  })
+  child.addEventListener('click', function() {
+    console.log('点击子元素')
+  })
+  </script>
+</body>
+</html>

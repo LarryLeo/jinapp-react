@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Flex, ListView, Button, Modal, Toast } from "antd-mobile";
 import { IoIosStarOutline, IoIosStar } from "react-icons/io";
 import { requestGet, requestPost } from '../../../utils/utils'
-import { Wrapper } from "./style";
+import { Wrapper, RateModal } from "./style";
 import avatarPlaceHolder from '../../../assets/images/avatar.jpg'
 
 const userCredential = JSON.parse(localStorage.getItem('userCredential'))
@@ -12,7 +12,8 @@ const dataSource = new ListView.DataSource({
 const prompt = Modal.prompt
 export default class HistoryDetail extends Component {
   state = {
-    replyList: []
+    replyList: [],
+    showRateModal: false
   }
   // 渲染状态
   handleStatus = item => {
@@ -102,6 +103,9 @@ export default class HistoryDetail extends Component {
       }
     })
   })
+  toggleRateModal = () => {
+     this.setState({showRateModal: !this.state.showRateModal})
+  }
   componentDidMount() {
     this.fetchReplyList()
   }
@@ -146,8 +150,7 @@ export default class HistoryDetail extends Component {
           />
         </section>
         <section className='userOperate'>
-
-          <Button className='button' type='primary'>已解决问题</Button>
+          <Button onClick={() => this.toggleRateModal()} className='button' type='primary'>已解决问题</Button>
           <Button onClick={() => prompt('继续提问', '请输入内容',[
             {
               text: '取消'
@@ -158,6 +161,14 @@ export default class HistoryDetail extends Component {
             }
           ])} style={{backgroundColor:'#fff'}} className='button' type='ghost'>继续提问</Button>
         </section>
+        <RateModal
+          visible={this.state.showRateModal}
+          onClick={() => this.toggleRateModal()}
+          >
+          <div onClick={(e) => e.stopPropagation()} className='rateWindow'>
+
+          </div>
+        </RateModal>
       </Wrapper>
     );
   }
