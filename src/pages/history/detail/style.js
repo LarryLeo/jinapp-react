@@ -62,6 +62,7 @@ export const Wrapper = styled.div`
       height: 40px;
       border-radius: 20px;
     }
+  /* 用户操作 */
   .userOperate {
     position: fixed;
     bottom: 0px;
@@ -72,6 +73,7 @@ export const Wrapper = styled.div`
     background-color: #f5f6fa;
     padding: 5px 10px;
     .button {
+      display: ${props => props.isFinished ? 'none' : 'block'};
       width: 40%;
       font-size: 14px;
     }
