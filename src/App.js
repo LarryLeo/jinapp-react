@@ -17,6 +17,7 @@ import GuideDetail from './pages/guide/guideDetail'
 import Make from './pages/make'
 import History from './pages/history/index'
 import HistoryDetail from './pages/history/detail/index'
+import CompanyCommunication from './pages/companyCommunication/index'
 
 import Contacts from './pages/serviceNav/contacts/index'
 
@@ -63,6 +64,9 @@ export default class App extends Component {
     }, {
       path: '/my/history/:type',
       component: HistoryDetail
+    }, {
+      path: '/communication',
+      component: CompanyCommunication
     }]
 
     return (

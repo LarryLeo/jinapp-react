@@ -115,10 +115,17 @@ class Home extends Component {
               </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#007aff" }}>
-              <Flex justify="center">
+              <Link to={{
+                pathname: '/communication',
+                state: {
+                  title: '警企互联'
+                }
+              }}>
+                <Flex justify="center">
                 <img className="menuIcon" src={iconChat} alt="" />
                 <span>警企互联</span>
               </Flex>
+              </Link>
             </div>
           </Flex>
         </section>
