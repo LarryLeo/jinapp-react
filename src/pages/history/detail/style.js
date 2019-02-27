@@ -2,13 +2,13 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.div`
 .am-list-body {
+    padding-bottom: 30px;
     background-color: #f5f6fa;
     border: none;
   }
   .listItem {
     padding: 10px;
-    margin-bottom: 10px;
-    height: 120px;
+    margin-bottom:10px;
     background-color: #fff;
     .row {
       margin-bottom: 10px;
@@ -61,4 +61,18 @@ export const Wrapper = styled.div`
       height: 40px;
       border-radius: 20px;
     }
+  .userOperate {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    display:flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background-color: #f5f6fa;
+    padding: 5px 10px;
+    .button {
+      width: 40%;
+      font-size: 14px;
+    }
+  }
 `

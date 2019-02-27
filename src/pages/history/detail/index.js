@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Flex, ListView } from "antd-mobile";
+import { Flex, ListView, Button, Modal, Toast } from "antd-mobile";
 import { IoIosStarOutline, IoIosStar } from "react-icons/io";
 import { requestGet, requestPost } from '../../../utils/utils'
 import { Wrapper } from "./style";
 import avatarPlaceHolder from '../../../assets/images/avatar.jpg'
 
+const userCredential = JSON.parse(localStorage.getItem('userCredential'))
 const dataSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2
 })
+const prompt = Modal.prompt
 export default class HistoryDetail extends Component {
   state = {
     replyList: []
@@ -51,7 +53,6 @@ export default class HistoryDetail extends Component {
   };
   // 获取回复数据
   fetchReplyList = async() => {
-    const userCredential = JSON.parse(localStorage.getItem('userCredential'))
     const {state:{apiUrl,apiParams}} = this.props.location
     let res = await requestGet({
       apiUrl,
@@ -78,6 +79,29 @@ export default class HistoryDetail extends Component {
       )
     }
   }
+
+  sendMessage = (content) => new Promise(resolve => {
+    const {state:{askUrl, apiParams}} = this.props.location
+    if(!content.length) return Toast.show('内容不能为空')
+    requestPost({
+      apiUrl: askUrl,
+      data: {...apiParams, ...userCredential, content}
+    }).then(res => {
+      if(res.success) {
+        Toast.show('发送成功')
+        // 发送后直接更新state，免请求
+        this.setState({
+          replyList: [...this.state.replyList, {
+            content,
+            reply_type: 'question',
+          }]
+        })
+        resolve()
+      } else {
+        Toast.fail('发送失败')
+      }
+    })
+  })
   componentDidMount() {
     this.fetchReplyList()
   }
@@ -109,7 +133,7 @@ export default class HistoryDetail extends Component {
             <span className="value">{rData.content}</span>
           </Flex>
           <Flex>
-            <span className="key">评分</span>
+            <span style={{marginBottom: 0}} className="key">评分</span>
             {this.handleRating(rData)}
           </Flex>
         </section>
@@ -117,8 +141,22 @@ export default class HistoryDetail extends Component {
           <ListView
             dataSource={dataSource.cloneWithRows(this.state.replyList)}
             renderRow={this._renderRow}
-            style={{height: document.documentElement.clientHeight - 195}}
+            // onScroll={(e) => console.log(e.target.scrollTop)}
+            style={{height: document.documentElement.clientHeight - 185}}
           />
+        </section>
+        <section className='userOperate'>
+
+          <Button className='button' type='primary'>已解决问题</Button>
+          <Button onClick={() => prompt('继续提问', '请输入内容',[
+            {
+              text: '取消'
+            },
+            {
+              text: '确定',
+              onPress: value => this.sendMessage(value)
+            }
+          ])} style={{backgroundColor:'#fff'}} className='button' type='ghost'>继续提问</Button>
         </section>
       </Wrapper>
     );

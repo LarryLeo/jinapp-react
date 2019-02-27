@@ -58,6 +58,7 @@ class History extends Component {
           state: {
             title: '我的建议',
             apiUrl: '/app/v1/suggestion/getReplyList',
+            askUrl: '/app/v1/suggestion/addReply',
             apiParams: {
               suggestion_id: rData.id
             },
@@ -97,6 +98,7 @@ class History extends Component {
           state: {
             title: '我的咨询',
             apiUrl: '/app/v1/consult/getReplyList',
+            askUrl: '/app/v1/consult/addReply',
             apiParams: {
               consult_id: rData.id
             },
