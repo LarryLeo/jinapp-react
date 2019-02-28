@@ -35,6 +35,7 @@ export const Communication = styled.div`
   }
   /* 上传图片区样式 */
   .displayImgWrapper {
+    position: relative;
     margin-right: 12px;
     width: 58px;
     height: 58px;
@@ -43,6 +44,11 @@ export const Communication = styled.div`
     .displayImg {
       width: 100%;
       height: 100%;
+    }
+    .close {
+      position: absolute;
+      right: -8px;
+      top: -8px;
     }
   }
   /* 提交 */

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Tabs, Flex, Picker, Button, Toast } from 'antd-mobile'
 import * as qiniu from 'qiniu-js'
 import { FiUpload } from 'react-icons/fi'
+import { IoIosCloseCircle } from 'react-icons/io'
 import { Communication } from './style'
 import { requestGet } from '../../utils/utils'
 
@@ -13,13 +14,20 @@ export default class CompanyCommunication extends Component {
     displayImages: [],
     uploadToken: ''
   }
-
+  // 删除图片
+  removeImage = (index) => {
+    this.setState({
+      selectedImages: [...this.state.selectedImages.slice(0,index), ...this.state.selectedImages.slice(index + 1)],
+      displayImages: [...this.state.displayImages.slice(0,index), ...this.state.displayImages.slice(index + 1)]
+    })
+  }
   // 渲染显示图片
   renderDisplayImages = () => {
     if(this.state.displayImages.length) {
       return this.state.displayImages.map((img, i) => (
         <div className='displayImgWrapper' key={i}>
           <img className='displayImg' src={img} alt="img" />
+          <IoIosCloseCircle onClick={() => this.removeImage(i)} size={20} color='rgba(0,0,0,0.7)' className='close' />
         </div>
       ))
     } else {
@@ -62,6 +70,7 @@ export default class CompanyCommunication extends Component {
     if(this.state.displayImages.length === 4 || files.length > 4) return Toast.show('最多上传4张图片')
     let displayImages = []
     let fileIndex = 0
+    if(!files.length) return
     reader.readAsDataURL(files[fileIndex])
     reader.onloadend = () => {
       displayImages.push(reader.result)
@@ -117,7 +126,7 @@ export default class CompanyCommunication extends Component {
                   <label htmlFor="imgUploadBtn">
                     <FiUpload size={24} />
                   </label>
-                  <input style={{display: 'none'}} id='imgUploadBtn' multiple type="file" onChange={(e) => this.pickImage(e)} />
+                  <input style={{display: 'none'}} id='imgUploadBtn' multiple type="file" accept='image/*' onChange={(e) => this.pickImage(e)} />
                 </div>
               </Flex>
               <div className='submit'>
