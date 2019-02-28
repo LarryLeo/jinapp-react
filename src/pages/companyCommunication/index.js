@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import { Tabs, Flex, Picker, Button, Toast } from 'antd-mobile'
+import ImageUploader from 'react-images-upload'
 import { FiUpload } from 'react-icons/fi'
 import { Communication } from './style'
 
-const PickerChildren = props => (
-  // 自定义pickerChildren
-  <div onClick={props.onClick} className="pickerChildren">
-    <div className="inlineWrapper">
-      <div className="pickerKey">{props.children}</div>
-      <div className="pickerVal">{props.extra}</div>
-    </div>
-  </div>
-);
+const reader = new FileReader()
 export default class CompanyCommunication extends Component {
+  uploadImage = (e) => {
+    console.log(e.target.files)
+    reader.readAsDataURL(e.target.files[0])
+    reader.onloadend = () => {
+      console.log(reader.result)
+    }
+  }
   render() {
     return (
       <Communication>
@@ -41,7 +41,10 @@ export default class CompanyCommunication extends Component {
               />
               <Flex className='imgUpload'>
                 <div className='icon'>
-                  <FiUpload size={24} />
+                  <label htmlFor="imgUploadBtn">
+                    <FiUpload size={24} />
+                  </label>
+                  <input style={{display: 'none'}} id='imgUploadBtn' multiple type="file" onChange={(e) => this.uploadImage(e)} />
                 </div>
               </Flex>
               <div className='submit'>
