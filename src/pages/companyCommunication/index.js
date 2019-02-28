@@ -8,41 +8,45 @@ import { requestGet } from '../../utils/utils'
 const reader = new FileReader()
 export default class CompanyCommunication extends Component {
   state = {
-    selectedImage: '',
-    uploadedImage: '',
+    selectedImages: [],
+    uploadedImages: [],
     uploadToken: ''
   }
 
 // 测试七牛上传
   qinUpload = () => {
-    // 对必要参数进行配置
-    let file = this.state.selectedImage
-    let key = `jinapp/${file.name}`
-    let token = this.state.uploadToken
+    let uploadedImages = []
     let config = {
-      region: qiniu.region.z2,
-    }
-    let putExtra = {
-      fname: file.name,
-      params: {},
-      mimeType: ["image/png", "image/jpeg", "image/gif"] || null
-};
-    let observable = qiniu.upload(file, key, token, putExtra, config)
-
-    observable.subscribe({
-      next: res => console.log(res),
-      error: err => console.log(err),
-      complete: res => console.log(res)
-    }) // 上传开始
+        region: qiniu.region.z2,
       }
+    for (let i = 0; i < this.state.selectedImages.length; i++) {
+      // 对必要参数进行配置
+      console.log('爱上上传')
+      let file = this.state.selectedImages[i]
+      let key = `jinapp/${file.name}`
+      let token = this.state.uploadToken
+      let putExtra = {
+        fname: file.name,
+        params: {},
+        mimeType: ["image/png", "image/jpeg", "image/gif"] || null
+      };
+      let observable = qiniu.upload(file, key, token, putExtra, config)
+
+      observable.subscribe({
+        next: res => console.log(res),
+        error: err => console.log(err),
+        complete: res => {
+          console.log(res)
+          uploadedImages.push(`http://jinshang-test.chimukeji.com/${res.key}`)
+        }
+      })
+    }
+    this.setState({uploadedImages})
+  }
 
   uploadImage = (e) => {
     console.log(e.target.files)
-    this.setState({selectedImage: e.target.files[0]})
-    reader.readAsDataURL(e.target.files[0])
-    reader.onloadend = () => {
-      console.log(reader.result)
-    }
+    this.setState({selectedImages: e.target.files})
   }
   getUploadToken = async() => {
     let res = await requestGet({apiUrl: '/app/v1/file/uploadToken', data: {has_key: 0}})
