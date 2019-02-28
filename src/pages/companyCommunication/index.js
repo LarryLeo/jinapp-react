@@ -10,10 +10,24 @@ export default class CompanyCommunication extends Component {
   state = {
     selectedImages: [],
     uploadedImages: [],
+    displayImages: [],
     uploadToken: ''
   }
 
-// 测试七牛上传
+  // 渲染显示图片
+  renderDisplayImages = () => {
+    if(this.state.displayImages.length) {
+      return this.state.displayImages.map((img, i) => (
+        <div className='displayImgWrapper' key={i}>
+          <img className='displayImg' src={img} alt="img" />
+        </div>
+      ))
+    } else {
+      return <span></span>
+    }
+  }
+
+  // 测试七牛上传
   qinUpload = () => {
     let uploadedImages = []
     let config = {
@@ -21,7 +35,6 @@ export default class CompanyCommunication extends Component {
       }
     for (let i = 0; i < this.state.selectedImages.length; i++) {
       // 对必要参数进行配置
-      console.log('爱上上传')
       let file = this.state.selectedImages[i]
       let key = `jinapp/${file.name}`
       let token = this.state.uploadToken
@@ -44,9 +57,26 @@ export default class CompanyCommunication extends Component {
     this.setState({uploadedImages})
   }
 
-  uploadImage = (e) => {
-    console.log(e.target.files)
-    this.setState({selectedImages: e.target.files})
+  pickImage = (e) => {
+    let files = e.target.files
+    if(this.state.displayImages.length === 4 || files.length > 4) return Toast.show('最多上传4张图片')
+    let displayImages = []
+    let fileIndex = 0
+    reader.readAsDataURL(files[fileIndex])
+    reader.onloadend = () => {
+      displayImages.push(reader.result)
+      fileIndex++
+      if (fileIndex < files.length) {
+        reader.readAsDataURL(files[fileIndex])
+      } else {
+        console.log('全部终了')
+        console.log(displayImages)
+        this.setState({
+          selectedImages: [...this.state.selectedImages, ...files],
+          displayImages: [...this.state.displayImages, ...displayImages]
+        })
+      }
+    }
   }
   getUploadToken = async() => {
     let res = await requestGet({apiUrl: '/app/v1/file/uploadToken', data: {has_key: 0}})
@@ -81,12 +111,13 @@ export default class CompanyCommunication extends Component {
                 className="textArea"
                 rows="10"
               />
-              <Flex className='imgUpload'>
+              <Flex className='imgUpload' wrap={true}>
+                {this.renderDisplayImages()}
                 <div className='icon'>
                   <label htmlFor="imgUploadBtn">
                     <FiUpload size={24} />
                   </label>
-                  <input style={{display: 'none'}} id='imgUploadBtn' multiple type="file" onChange={(e) => this.uploadImage(e)} />
+                  <input style={{display: 'none'}} id='imgUploadBtn' multiple type="file" onChange={(e) => this.pickImage(e)} />
                 </div>
               </Flex>
               <div className='submit'>
