@@ -145,11 +145,24 @@ export const fetchCompanies = () => {
     })
   }
 }
+export const fetchPersonList = () => {
+  return async(dispatch, getState) => {
+    let company_id = getState().getIn(['companies', 'selectedCompany', 'id'])
+    let res = await requestGet({
+      apiUrl: '/app/v1/company/allMemberList',
+      data: {...userCredential, company_id}
+    })
+    return dispatch({
+      type: types.FETCH_PERSON_LIST,
+      list: res.list
+    })
+  }
+}
 export const cacheSelectedCompany = (selectedCompany) => ({
   type: types.CACHE_SELECTED_COMPANY,
   selectedCompany,
 })
-export const cacheSelectedPerson = (cacheSelectedPerson) => ({
+export const cacheSelectedPerson = (selectedPerson) => ({
   type: types.CACHE_SELECTED_PERSON,
-  cacheSelectedPerson,
+  selectedPerson,
 })

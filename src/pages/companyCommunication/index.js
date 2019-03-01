@@ -117,10 +117,17 @@ class CompanyCommunication extends Component {
                 <span className='value'>{this.props.selectedCompany.name}</span>
               </Flex>
               </Link>
-              <Flex justify='between' className='pickerItem'>
+              <Link to={{
+                pathname: '/communication/personlist',
+                state: {
+                  title: '选择联系人'
+                }
+              }}>
+                <Flex justify='between' className='pickerItem'>
                 <span className='key'>联系人</span>
                 <span className='value'>{this.props.selectedPerson.name}</span>
               </Flex>
+              </Link>
               <textarea
                 placeholder="发现商机，拓展客户"
                 value={this.state.content}

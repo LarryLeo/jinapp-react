@@ -19,6 +19,7 @@ import History from './pages/history/index'
 import HistoryDetail from './pages/history/detail/index'
 import CompanyCommunication from './pages/companyCommunication/index'
 import CompanyList from './pages/companyCommunication/companies/index'
+import PersonList from './pages/companyCommunication/person/index'
 
 import Contacts from './pages/serviceNav/contacts/index'
 
@@ -71,6 +72,9 @@ export default class App extends Component {
     },{
       path: '/communication/companies',
       component: CompanyList
+    },{
+      path: '/communication/personlist',
+      component: PersonList
     }]
 
     return (
