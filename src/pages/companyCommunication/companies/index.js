@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { ListView, List, SearchBar, Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
-import { fetchCompanies, cacheSelectedCompany } from '../../../actions/index'
+import { fetchCompanies, cacheSelectedCompany, resetSelectedPerson } from '../../../actions/index'
 import { ContactList } from './style'
 
 const { Item } = List
@@ -40,6 +40,7 @@ class CompanyList extends Component {
       name: rData.company,
       id: rData.id
     })
+    this.props.resetSelectedPerson()
     this.props.history.goBack()
     }} >{rData.company}</Item>
   }
@@ -113,7 +114,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   fetchCompanies,
-  cacheSelectedCompany
+  cacheSelectedCompany,
+  resetSelectedPerson
 }
 
 

@@ -166,3 +166,6 @@ export const cacheSelectedPerson = (selectedPerson) => ({
   type: types.CACHE_SELECTED_PERSON,
   selectedPerson,
 })
+export const resetSelectedPerson = () => ({
+  type: types.RESET_SELECTED_PERSON
+})

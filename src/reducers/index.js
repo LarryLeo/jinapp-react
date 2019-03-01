@@ -1,5 +1,5 @@
 import { combineReducers } from "redux-immutable";
-import { fromJS, List } from "immutable";
+import { fromJS, List, Map } from "immutable";
 import * as types from "../actions/actionTypes";
 
 // Tab导航激活Tab数据
@@ -159,6 +159,11 @@ const companies = (state=fromJS({
       return state.mergeDeep({
         selectedPerson: action.selectedPerson
       })
+    case types.RESET_SELECTED_PERSON:
+      return state.set('selectedPerson', Map({
+        name: '请选择联系人',
+        id: ''
+      }))
     default:
       return state
   }
