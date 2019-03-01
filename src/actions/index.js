@@ -145,3 +145,11 @@ export const fetchCompanies = () => {
     })
   }
 }
+export const cacheSelectedCompany = (selectedCompany) => ({
+  type: types.CACHE_SELECTED_COMPANY,
+  selectedCompany,
+})
+export const cacheSelectedPerson = (cacheSelectedPerson) => ({
+  type: types.CACHE_SELECTED_PERSON,
+  cacheSelectedPerson,
+})

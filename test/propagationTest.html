@@ -73,28 +73,6 @@ console.log(mData);
 
 
 // 测试
-search() {
-            if (!vueCompanyList.keyword) {
-                mui.toast('请输入关键词');
-                return;
-            }
-            var companyList = JSON.parse(JSON.stringify(vueCompanyList.list))
-            for (var k = 0; k < companyList.length; k++) {
-                for (var r = 0; r < companyList[k].items.length; r++) {
-                    if(companyList[k].items[r].company.indexOf(vueCompanyList.keyword) > -1) continue;
-                    companyList[k].items.splice(r--, 1);
-
-                }
-                if (!companyList[k].items.length) {
-                    companyList.splice(k--, 1);
-                }
-            }
-            if (!companyList.length) {
-                mui.toast('没有找到匹配数据');
-                return;
-            }
-            vueCompanyList.filterList = companyList;
-        },
 
   </script>
 </body>

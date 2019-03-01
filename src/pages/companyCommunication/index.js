@@ -6,9 +6,10 @@ import { FiUpload } from 'react-icons/fi'
 import { IoIosCloseCircle } from 'react-icons/io'
 import { Communication } from './style'
 import { requestGet } from '../../utils/utils'
+import { connect } from 'react-redux'
 
 const reader = new FileReader()
-export default class CompanyCommunication extends Component {
+class CompanyCommunication extends Component {
   state = {
     selectedImages: [],
     uploadedImages: [],
@@ -38,7 +39,10 @@ export default class CompanyCommunication extends Component {
   }
 
   // 测试七牛上传
-  qinUpload = () => {
+  qinUpload = async() => {
+    let res = await requestGet({apiUrl: '/app/v1/file/uploadToken', data: {has_key: 0}})
+    let token = res.data.upload_token
+
     let uploadedImages = []
     let config = {
         region: qiniu.region.z2,
@@ -47,7 +51,6 @@ export default class CompanyCommunication extends Component {
       // 对必要参数进行配置
       let file = this.state.selectedImages[i]
       let key = `jinapp/${file.name}`
-      let token = this.state.uploadToken
       let putExtra = {
         fname: file.name,
         params: {},
@@ -89,12 +92,8 @@ export default class CompanyCommunication extends Component {
       }
     }
   }
-  getUploadToken = async() => {
-    let res = await requestGet({apiUrl: '/app/v1/file/uploadToken', data: {has_key: 0}})
-    res.success && this.setState({uploadToken: res.data.upload_token})
-  }
   componentDidMount() {
-    this.getUploadToken()
+    console.log(this.props.selectedCompany)
   }
   render() {
     return (
@@ -115,12 +114,12 @@ export default class CompanyCommunication extends Component {
               }}>
                 <Flex justify='between' className='pickerItem'>
                 <span className='key'>企业</span>
-                <span className='value'>请选择联系企业</span>
+                <span className='value'>{this.props.selectedCompany.name}</span>
               </Flex>
               </Link>
               <Flex justify='between' className='pickerItem'>
                 <span className='key'>联系人</span>
-                <span className='value'>请选择联系人</span>
+                <span className='value'>{this.props.selectedPerson.name}</span>
               </Flex>
               <textarea
                 placeholder="发现商机，拓展客户"
@@ -151,3 +150,10 @@ export default class CompanyCommunication extends Component {
     )
   }
 }
+const mapStateToProps = (state) => ({
+  selectedCompany: state.getIn(['companies', 'selectedCompany']).toObject(),
+  selectedPerson: state.getIn(['companies', 'selectedPerson']).toObject()
+
+})
+
+export default connect(mapStateToProps)(CompanyCommunication)

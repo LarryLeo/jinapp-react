@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { ListView, List, SearchBar, Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
-import { fetchCompanies } from '../../../actions/index'
+import { fetchCompanies, cacheSelectedCompany } from '../../../actions/index'
 import { ContactList } from './style'
-
-// todo 搜索
 
 const { Item } = List
 const dataSource = new ListView.DataSource({
@@ -37,7 +35,13 @@ class CompanyList extends Component {
     return dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
   }
   _renderRow = (rData, s1, r1) => {
-    return <Item onClick={() => console.log(rData.id)} >{rData.company}</Item>
+    return <Item onClick={() =>{
+      this.props.cacheSelectedCompany({
+      name: rData.company,
+      id: rData.id
+    })
+    this.props.history.goBack()
+    }} >{rData.company}</Item>
   }
   _renderSectionHeader = (sData, sid) => {
     return <p>{sData}</p>
@@ -104,11 +108,12 @@ class CompanyList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  companies: state.getIn(['companies', 'data']).toArray()
+  companies: state.getIn(['companies', 'data']).toArray(),
 })
 
 const mapDispatchToProps = {
-  fetchCompanies
+  fetchCompanies,
+  cacheSelectedCompany
 }
 
 

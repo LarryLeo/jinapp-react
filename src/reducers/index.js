@@ -133,12 +133,28 @@ const historyDataGenerator = (state=historyInitialState, action) => {
 }
 // 联系企业和企业联系人
 const companies = (state=fromJS({
-  data: []
+  data: [],
+  selectedCompany: {
+    name: '请选择联系企业',
+    id: ''
+  },
+  selectedPerson: {
+    name: '请选择联系人',
+    id: ''
+  }
 }), action) => {
   switch(action.type) {
     case types.FETCH_COMPANIES:
       return state.mergeDeep({
         data: action.list
+      })
+    case types.CACHE_SELECTED_COMPANY:
+      return state.mergeDeep({
+        selectedCompany: action.selectedCompany
+      })
+    case types.CACHE_SELECTED_PERSON:
+      return state.mergeDeep({
+        selectedPerson: action.selectedPerson
       })
     default:
       return state
