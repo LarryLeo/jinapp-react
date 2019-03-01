@@ -131,6 +131,19 @@ const historyDataGenerator = (state=historyInitialState, action) => {
       return state
   }
 }
+// 联系企业和企业联系人
+const companies = (state=fromJS({
+  data: []
+}), action) => {
+  switch(action.type) {
+    case types.FETCH_COMPANIES:
+      return state.mergeDeep({
+        data: action.list
+      })
+    default:
+      return state
+  }
+}
 // reducer工厂
 const reducerFactory = (reducerName, reducerFunctionName) => {
   return (state, action) => {
@@ -150,5 +163,6 @@ export default combineReducers({
   guide,
   makeCenter,
   mySuggestions: reducerFactory('mySuggestions', historyDataGenerator),
-  myConsultations: reducerFactory('myConsultations', historyDataGenerator)
+  myConsultations: reducerFactory('myConsultations', historyDataGenerator),
+  companies
 });

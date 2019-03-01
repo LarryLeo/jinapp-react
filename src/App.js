@@ -18,6 +18,7 @@ import Make from './pages/make'
 import History from './pages/history/index'
 import HistoryDetail from './pages/history/detail/index'
 import CompanyCommunication from './pages/companyCommunication/index'
+import CompanyList from './pages/companyCommunication/companies/index'
 
 import Contacts from './pages/serviceNav/contacts/index'
 
@@ -67,6 +68,9 @@ export default class App extends Component {
     }, {
       path: '/communication',
       component: CompanyCommunication
+    },{
+      path: '/communication/companies',
+      component: CompanyList
     }]
 
     return (

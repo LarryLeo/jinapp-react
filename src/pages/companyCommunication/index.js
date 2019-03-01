@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Tabs, Flex, Picker, Button, Toast } from 'antd-mobile'
+import { Link } from 'react-router-dom'
 import * as qiniu from 'qiniu-js'
 import { FiUpload } from 'react-icons/fi'
 import { IoIosCloseCircle } from 'react-icons/io'
@@ -12,7 +13,8 @@ export default class CompanyCommunication extends Component {
     selectedImages: [],
     uploadedImages: [],
     displayImages: [],
-    uploadToken: ''
+    uploadToken: '',
+    content: ''
   }
   // 删除图片
   removeImage = (index) => {
@@ -105,18 +107,25 @@ export default class CompanyCommunication extends Component {
             prerenderingSiblingsNumber={false}
           >
             <section className='company'>
-              <Flex justify='between' className='pickerItem'>
+              <Link to={{
+                pathname: '/communication/companies',
+                state: {
+                  title: '选择企业'
+                }
+              }}>
+                <Flex justify='between' className='pickerItem'>
                 <span className='key'>企业</span>
                 <span className='value'>请选择联系企业</span>
               </Flex>
+              </Link>
               <Flex justify='between' className='pickerItem'>
                 <span className='key'>联系人</span>
                 <span className='value'>请选择联系人</span>
               </Flex>
               <textarea
                 placeholder="发现商机，拓展客户"
-                value=''
-                onChange={(e) => console.log(e.target.value)}
+                value={this.state.content}
+                onChange={(e) => this.setState({content: e.target.value})}
                 className="textArea"
                 rows="10"
               />

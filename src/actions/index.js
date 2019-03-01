@@ -130,3 +130,18 @@ export const requestHistoryData = (calledName) => {
     res.success && dispatch(receiveHistoryData(calledName, res.data.list))
   }
 }
+
+// 获取联系企业和企业联系人
+export const fetchCompanies = () => {
+  return async(dispatch, getState) => {
+    if(getState().getIn(['companies', 'data']).size) return
+    let res = await requestGet({
+      apiUrl: '/app/v1/company/allList',
+      data: {...userCredential}
+    })
+    return dispatch({
+      type: types.FETCH_COMPANIES,
+      list: res.list
+    })
+  }
+}
