@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { ListView, List, SearchBar } from 'antd-mobile'
+import { ListView, List, SearchBar, Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { fetchCompanies } from '../../../actions/index'
+import { ContactList } from './style'
 
+// todo 搜索
 
 const { Item } = List
 const dataSource = new ListView.DataSource({
@@ -13,7 +15,8 @@ const dataSource = new ListView.DataSource({
 })
 class CompanyList extends Component {
   state = {
-    dataSource: {}
+    dataSource: dataSource.cloneWithRowsAndSections({}),
+    inputVal: ''
   }
   genDataSource = (rawData) => {
     let dataBlob = {},
@@ -31,31 +34,71 @@ class CompanyList extends Component {
         dataBlob[i + ':' + j] = data[j]
       }
     }
-    console.log(dataBlob, sectionIDs, rowIDs)
     return dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
   }
   _renderRow = (rData, s1, r1) => {
-    console.log(rData, s1, r1)
-    return <Item>{rData.company}</Item>
+    return <Item onClick={() => console.log(rData.id)} >{rData.company}</Item>
   }
   _renderSectionHeader = (sData, sid) => {
-    console.log(sData)
     return <p>{sData}</p>
+  }
+  onSearch = (keyword) => {
+    let companies = JSON.parse(JSON.stringify(this.props.companies))
+    for(let i = 0; i < companies.length; i++) {
+      for(let j = 0; j < companies[i].items.length; j++) {
+        if(companies[i].items[j].company.indexOf(keyword) > -1) continue; // 保留匹配项
+        companies[i].items.splice(j--, 1) //删除不匹配项(注意递减，因为删除后数组长度缩短)
+      }
+      if(!companies[i].items.length) {
+        companies.splice(i--, 1) // 如果上面操作导致子数据完全清空，companies也自然要缩减长度
+      }
+    }
+    if(!companies.length) {
+      console.log('没有匹配项')
+
+    }
+    this.setState({
+      inputVal: keyword,
+      dataSource: this.genDataSource(companies)
+    })
+
+  }
+  renderSearchResult = () => {
+    if(!this.state.dataSource.rowIdentities.length) {
+      return <p className='searchResult'>没有匹配项</p>
+    }
   }
   componentDidMount() {
     this.props.fetchCompanies()
+     this.setState({
+        dataSource: this.genDataSource(this.props.companies)
+      })
+  }
+  componentWillReceiveProps(nextPorps) {
+    if(this.props.companies !== nextPorps.companies) {
+      this.setState({
+        dataSource: this.genDataSource(nextPorps.companies)
+      })
+    }
   }
   render() {
     return (
-      <div>
-        企业列表
-        <ListView
-          dataSource={this.genDataSource(this.props.companies)}
+      <ContactList>
+        <SearchBar
+          value={this.state.inputVal}
+          placeholder='搜索...'
+          onChange={this.onSearch}
+          onClear={() => { console.log('onClear'); }}
+          onCancel={() => { console.log('onCancel'); }}
+        />
+        {this.renderSearchResult()}
+        <ListView.IndexedList
+          dataSource={this.state.dataSource}
           renderRow={this._renderRow}
           renderSectionHeader={this._renderSectionHeader}
-          style={{height: 500}}
+          style={{height: document.documentElement.clientHeight - 92}}
          />
-      </div>
+      </ContactList>
     )
   }
 }

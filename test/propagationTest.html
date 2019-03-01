@@ -21,149 +21,80 @@
     console.log('点击子元素')
   })
 
-  // 测试dataBlob
-  const provinceData = [{
-  value: '11',
-  label: '北京市',
-  spell: 'BeiJingShi'
-}, {
-  value: '12',
-  label: '天津市',
-  spell: 'TianJinShi'
-}, {
-  value: '13',
-  label: '河北省',
-  spell: 'HeBeiSheng'
-}, {
-  value: '14',
-  label: '山西省',
-  spell: 'ShanXiSheng'
-}, {
-  value: '15',
-  label: '内蒙古自治区',
-  spell: 'NeiMengGuZiZhiQu'
-}, {
-  value: '21',
-  label: '辽宁省',
-  spell: 'LiaoNingSheng'
-}, {
-  value: '22',
-  label: '吉林省',
-  spell: 'JiLinSheng'
-}, {
-  value: '23',
-  label: '黑龙江省',
-  spell: 'HeiLongJiangSheng'
-}, {
-  value: '31',
-  label: '上海市',
-  spell: 'ShangHaiShi'
-}, {
-  value: '32',
-  label: '江苏省',
-  spell: 'JiangSuSheng'
-}, {
-  value: '33',
-  label: '浙江省',
-  spell: 'ZheJiangSheng'
-}, {
-  value: '34',
-  label: '安徽省',
-  spell: 'AnHuiSheng'
-}, {
-  value: '35',
-  label: '福建省',
-  spell: 'FuJianSheng'
-}, {
-  value: '36',
-  label: '江西省',
-  spell: 'JiangXiSheng'
-}, {
-  value: '37',
-  label: '山东省',
-  spell: 'ShanDongSheng'
-}, {
-  value: '41',
-  label: '河南省',
-  spell: 'HeNanSheng'
-}, {
-  value: '42',
-  label: '湖北省',
-  spell: 'HuBeiSheng'
-}, {
-  value: '43',
-  label: '湖南省',
-  spell: 'HuNanSheng'
-}, {
-  value: '44',
-  label: '广东省',
-  spell: 'GuangDongSheng'
-}, {
-  value: '45',
-  label: '广西壮族自治区',
-  spell: 'GuangXiZhuangZuZiZhiQu'
-}, {
-  value: '46',
-  label: '海南省',
-  spell: 'HaiNanSheng'
-}, {
-  value: '50',
-  label: '重庆市',
-  spell: 'ChongQingShi'
-}, {
-  value: '51',
-  label: '四川省',
-  spell: 'SiChuanSheng'
-}, {
-  value: '52',
-  label: '贵州省',
-  spell: 'GuiZhouSheng'
-}, {
-  value: '53',
-  label: '云南省',
-  spell: 'YunNanSheng'
-}, {
-  value: '54',
-  label: '西藏自治区',
-  spell: 'XiCangZiZhiQu'
-}, {
-  value: '61',
-  label: '陕西省',
-  spell: 'ShanXiSheng'
-}, {
-  value: '62',
-  label: '甘肃省',
-  spell: 'GanSuSheng'
-}, {
-  value: '63',
-  label: '青海省',
-  spell: 'QingHaiSheng'
-}, {
-  value: '64',
-  label: '宁夏回族自治区',
-  spell: 'NingXiaHuiZuZiZhiQu'
-}, {
-  value: '65',
-  label: '新疆维吾尔自治区',
-  spell: 'XinJiangWeiWuErZiZhiQu'
-}];
-  function genData(provinceData) {
-  const dataBlob = {};
-  const sectionIDs = [];
-  const rowIDs = [];
-  Object.keys(provinceData).forEach((item, index) => {
-    sectionIDs.push(item); // [0, 1, 2, 3...]
-    dataBlob[item] = item; // {1: 1, 2: 2, 3: 3...}
-    rowIDs[index] = []; // [[],[]]
-    console.log(provinceData[item])
-    provinceData[item].forEach((jj) => {
-      rowIDs[index].push(jj.value); // [[]]
-      dataBlob[jj.value] = jj.label;
-    });
-  });
-  console.log(dataBlob, sectionIDs, rowIDs)
+  // 测试filter
+  let rawData = [{
+  region: 'A',
+  data: [1,2,3]
+},{
+  region: 'B',
+  data: ['爆炸', '心态', '心灵','心心心']
+},
+  {
+  region: 'C',
+  data: ['爆炸心tang', '122', '心','ff']
 }
-  genData(provinceData)
+]
+
+let mData = []
+
+for(let i=0; i<rawData.length; i++){
+  let dataArr = []
+  let obj = {}
+  for(let j=0; j<rawData[i].data.length; j++) {
+
+    if(rawData[i].data[j].toString().indexOf('心') > -1) {
+      dataArr.push(rawData[i].data[j])
+      obj = {
+        region: rawData[i].region,
+        data: dataArr
+      }
+    }
+
+  }
+  mData.push(obj)
+
+}
+mData.splice(0,1)
+// let copy = JSON.parse(JSON.stringify(rawData))
+
+// for(let i=0; i<copy.length; i++){
+//   for(let j=0; j<copy[i].data.length; j++) {
+//     if(copy[i].data[j].toString().indexOf('心') > -1) continue;
+//     copy[i].data.splice(j--,1)
+//   }
+//   if(!copy[i].data.length) {
+//     copy.splice(i--,1)
+//   }
+// }
+
+
+
+console.log(mData);
+
+
+// 测试
+search() {
+            if (!vueCompanyList.keyword) {
+                mui.toast('请输入关键词');
+                return;
+            }
+            var companyList = JSON.parse(JSON.stringify(vueCompanyList.list))
+            for (var k = 0; k < companyList.length; k++) {
+                for (var r = 0; r < companyList[k].items.length; r++) {
+                    if(companyList[k].items[r].company.indexOf(vueCompanyList.keyword) > -1) continue;
+                    companyList[k].items.splice(r--, 1);
+
+                }
+                if (!companyList[k].items.length) {
+                    companyList.splice(k--, 1);
+                }
+            }
+            if (!companyList.length) {
+                mui.toast('没有找到匹配数据');
+                return;
+            }
+            vueCompanyList.filterList = companyList;
+        },
 
   </script>
 </body>

@@ -24,6 +24,7 @@ time, mark, audio, video {
 body,html,#root {
   height: 100%;
   position: relative;
+  touch-action:none;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
