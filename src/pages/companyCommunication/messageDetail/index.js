@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { MessageList, ReplyBar, UploadImagePreview } from "./style";
-import { ListView, Flex, Button, PullToRefresh } from "antd-mobile";
+import { ListView, Flex, Button, PullToRefresh, Toast } from "antd-mobile";
 import queryString from "query-string";
 import { requestGet, requestPost } from "../../../utils/utils";
 import { IoMdImage, IoIosCloseCircle } from "react-icons/io";
-import ImageViewer from 'react-viewer'
-import 'react-viewer/dist/index.css';
+import ImageViewer from "react-viewer";
+import "react-viewer/dist/index.css";
 
 const dataSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2
 });
+const reader = new FileReader();
 const myAvatar = JSON.parse(localStorage.getItem("memberInfo")).avatar;
 const userCredential = JSON.parse(localStorage.getItem("userCredential"));
 export default class MessageDetail extends Component {
@@ -20,7 +21,10 @@ export default class MessageDetail extends Component {
     loading: false,
     noMoreData: false,
     viewerVisible: false,
-    currentViewImage: ''
+    currentViewImage: "",
+    displayImages: [],
+    selectedImages: [],
+    inputValue: ""
   };
   fetchMessages = async () => {
     const queryData = queryString.parse(this.props.location.search);
@@ -54,10 +58,16 @@ export default class MessageDetail extends Component {
   sendMessage = () => {};
   renderChatImages = imgs => {
     return imgs.map((item, index) => (
-      <img key={index} src={item} className="chatImage" alt="chatImg" onClick={() => {
-        this.setState({currentViewImage: item})
-        this.toggleViewerVisible()
-      }}  />
+      <img
+        key={index}
+        src={item}
+        className="chatImage"
+        alt="chatImg"
+        onClick={() => {
+          this.setState({ currentViewImage: item });
+          this.toggleViewerVisible();
+        }}
+      />
     ));
   };
   _renderRow = rData => {
@@ -98,11 +108,61 @@ export default class MessageDetail extends Component {
     }
   };
   toggleViewerVisible = () => {
-    console.log(this.state.viewerVisible)
     this.setState({
       viewerVisible: !this.state.viewerVisible
-    })
-  }
+    });
+  };
+  pickImages = e => {
+    let files = e.target.files;
+    if (this.state.displayImages.length === 4 || files.length > 4)
+      return Toast.show("最多上传4张图片");
+    let displayImages = [];
+    let fileIndex = 0;
+    if (!files.length) return;
+    reader.readAsDataURL(files[fileIndex]);
+    reader.onloadend = () => {
+      displayImages.push(reader.result);
+      fileIndex++;
+      if (fileIndex < files.length) {
+        reader.readAsDataURL(files[fileIndex]);
+      } else {
+        console.log("全部终了");
+        console.log(displayImages);
+        this.setState({
+          selectedImages: [...this.state.selectedImages, ...files],
+          displayImages: [...this.state.displayImages, ...displayImages]
+        });
+      }
+    };
+  };
+  // 删除图片
+  removeImage = index => {
+    this.setState({
+      selectedImages: [
+        ...this.state.selectedImages.slice(0, index),
+        ...this.state.selectedImages.slice(index + 1)
+      ],
+      displayImages: [
+        ...this.state.displayImages.slice(0, index),
+        ...this.state.displayImages.slice(index + 1)
+      ]
+    });
+  };
+  renderDisplayImages = () => {
+    if (!this.state.displayImages.length) return;
+    console.log("显然图片");
+    return this.state.displayImages.map((item, index) => (
+      <div key={index} className="uploadImgWrapper">
+        <img src={item} alt="" />
+        <IoIosCloseCircle
+          size={20}
+          color="rgba(0,0,0,0.7)"
+          className="close"
+          onClick={() => this.removeImage(index)}
+        />
+      </div>
+    ));
+  };
   componentDidMount() {
     this.fetchMessages();
   }
@@ -112,34 +172,41 @@ export default class MessageDetail extends Component {
         <ListView
           dataSource={dataSource.cloneWithRows(this.state.chatDetail)}
           renderRow={this._renderRow}
-          pullToRefresh={<PullToRefresh refreshing={this.state.loading}
-          onRefresh={() => this.fetchMessages()} />}
+          pullToRefresh={
+            <PullToRefresh
+              refreshing={this.state.loading}
+              onRefresh={() => this.fetchMessages()}
+            />
+          }
           style={{
             height: document.documentElement.clientHeight - 45,
             backgroundColor: "#f5f6fa"
           }}
         />
-        <UploadImagePreview>
-          <div className='uploadImgWrapper'>
-            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
-            <IoIosCloseCircle
-            size={20}
-            color="rgba(0,0,0,0.7)"
-            className="close" />
-          </div>
-          <div className='uploadImgWrapper'>
-            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
-          </div>
-           <div className='uploadImgWrapper'>
-            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
-          </div>
-          <div className='uploadImgWrapper'>
-            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
-          </div>
-        </UploadImagePreview>
+        <UploadImagePreview>{this.renderDisplayImages()}</UploadImagePreview>
         <ReplyBar>
-          <IoMdImage size={24} color="#888" className="uploadImageIcon" />
-          <input className="input" type="text" placeholder="回复..." />
+          <label htmlFor="imgUploadBtn">
+            <IoMdImage
+              size={24}
+              color={this.state.displayImages.length ? "#007aff" : "#888"}
+              className="uploadImageIcon"
+            />
+          </label>
+          <input
+            style={{ display: "none" }}
+            type="file"
+            accept="image/*"
+            multiple
+            id="imgUploadBtn"
+            onChange={e => this.pickImages(e)}
+          />
+          <input
+            className="input"
+            type="text"
+            placeholder="回复..."
+            value={this.state.inputValue}
+            onChange={e => this.setState({ inputValue: e.target.value })}
+          />
           <div className="button">
             <Button type="primary" size="small">
               发送
@@ -154,8 +221,8 @@ export default class MessageDetail extends Component {
             noFooter={true}
             onMaskClick={() => this.toggleViewerVisible()}
             onClose={() => this.toggleViewerVisible()}
-            images={[{src: this.state.currentViewImage, alt: ''}]}
-            />
+            images={[{ src: this.state.currentViewImage, alt: "" }]}
+          />
         </div>
       </MessageList>
     );
