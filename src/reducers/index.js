@@ -168,6 +168,37 @@ const companies = (state=fromJS({
       return state
   }
 }
+export const chatList = (state=fromJS({
+  pn: 1,
+  ps: 10,
+  data: [],
+  loading: false,
+  noMoreData: false
+}), action) => {
+  let pn = state.get('pn'),
+      ps = state.get('ps');
+  switch(action.type) {
+    case types.REQUEST_CHAT_LIST:
+      return state.merge({
+        loading: true
+      })
+    case types.RECEIVE_CHAT_LIST:
+      return state.mergeDeep({
+        loading: false,
+        data: action.list,
+        pn: action.list.length >= ps ? ++pn : pn,
+        noMoreData: action.list.length < ps
+      })
+    case types.UPDATE_CHAT_LIST:
+      return state.merge({
+        pn: 1,
+        noMoreData: false,
+        data: List()
+      })
+    default:
+      return state
+  }
+}
 // reducer工厂
 const reducerFactory = (reducerName, reducerFunctionName) => {
   return (state, action) => {
@@ -188,5 +219,6 @@ export default combineReducers({
   makeCenter,
   mySuggestions: reducerFactory('mySuggestions', historyDataGenerator),
   myConsultations: reducerFactory('myConsultations', historyDataGenerator),
-  companies
+  companies,
+  chatList
 });

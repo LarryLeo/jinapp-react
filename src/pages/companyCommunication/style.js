@@ -56,3 +56,39 @@ export const Communication = styled.div`
     margin-top: 30px;
   }
 `
+export const ChatList = styled.div`
+  margin-top: 15px;
+  color: #888;
+  .chatListItem {
+    padding: 15px 10px;
+  }
+  .memberAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin-right: 10px;
+  }
+  .time {
+    margin-left: 10;
+  }
+  .messageContent {
+    flex: 1;
+    .userInfo {
+      display: flex;
+      align-items: baseline;
+    }
+    .companyName {
+      margin-right: 5px;
+      max-width: 150px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #000;
+    }
+    .memberName {
+      font-size: 12px;
+    }
+    .lastMessage {
+      margin-top: 15px;
+    }
+  }
+`

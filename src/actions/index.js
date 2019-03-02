@@ -169,3 +169,32 @@ export const cacheSelectedPerson = (selectedPerson) => ({
 export const resetSelectedPerson = () => ({
   type: types.RESET_SELECTED_PERSON
 })
+export const updateChatList = () => {
+  return (dispatch) => {
+    dispatch({
+      type: types.UPDATE_CHAT_LIST
+    })
+    return dispatch(fetchChatList())
+  }
+}
+export const fetchChatList = () => {
+  return async(dispatch, getState) => {
+    let chatList = getState().get('chatList')
+    if(chatList.get('noMoreData')) return
+    dispatch({
+      type: types.REQUEST_CHAT_LIST
+    })
+    let res = await requestGet({
+      apiUrl: '/app/v1/chat/myChatList',
+      data: {
+        ...userCredential,
+        pn: chatList.get('pn'),
+        ps: chatList.get('ps')
+      }
+    })
+    dispatch({
+      type: types.RECEIVE_CHAT_LIST,
+      list: res.list
+    })
+  }
+}
