@@ -14,7 +14,7 @@ export const MessageList = styled.div`
       padding: 10px;
       border-radius: 10px;
       background-color: #fff;
-      max-width: 40%;
+      max-width: 75%;
       line-height: 1.2rem;
     }
     .content-send {

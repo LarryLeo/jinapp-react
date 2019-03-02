@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { MessageList, ReplyBar, UploadImagePreview } from "./style";
-import { ListView, Flex, Button } from "antd-mobile";
+import { ListView, Flex, Button, PullToRefresh } from "antd-mobile";
 import queryString from "query-string";
 import { requestGet, requestPost } from "../../../utils/utils";
 import { IoMdImage, IoIosCloseCircle } from "react-icons/io";
@@ -99,6 +99,8 @@ export default class MessageDetail extends Component {
         <ListView
           dataSource={dataSource.cloneWithRows(this.state.chatDetail)}
           renderRow={this._renderRow}
+          pullToRefresh={<PullToRefresh refreshing={this.state.loading}
+          onRefresh={() => this.fetchMessages()} />}
           style={{
             height: document.documentElement.clientHeight - 45,
             backgroundColor: "#f5f6fa"
