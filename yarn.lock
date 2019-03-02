@@ -8509,6 +8509,13 @@ react-tween-state@^0.1.5:
     raf "^3.1.0"
     tween-functions "^1.0.1"
 
+react-viewer@^2.8.0:
+  version "2.8.0"
+  resolved "http://registry.npm.taobao.org/react-viewer/download/react-viewer-2.8.0.tgz#c10a05767d9fc733bc4f2b8e754d73ba366e1d25"
+  integrity sha1-wQoFdn2fxzO8TyuOdU1zujZuHSU=
+  dependencies:
+    classnames "^2.2.5"
+
 react@^16.8.2:
   version "16.8.2"
   resolved "http://registry.npm.taobao.org/react/download/react-16.8.2.tgz#83064596feaa98d9c2857c4deae1848b542c9c0c"

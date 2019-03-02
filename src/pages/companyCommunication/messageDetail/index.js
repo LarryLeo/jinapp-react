@@ -4,6 +4,8 @@ import { ListView, Flex, Button, PullToRefresh } from "antd-mobile";
 import queryString from "query-string";
 import { requestGet, requestPost } from "../../../utils/utils";
 import { IoMdImage, IoIosCloseCircle } from "react-icons/io";
+import ImageViewer from 'react-viewer'
+import 'react-viewer/dist/index.css';
 
 const dataSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2
@@ -16,7 +18,9 @@ export default class MessageDetail extends Component {
     ps: 10,
     chatDetail: [],
     loading: false,
-    noMoreData: false
+    noMoreData: false,
+    viewerVisible: false,
+    currentViewImage: ''
   };
   fetchMessages = async () => {
     const queryData = queryString.parse(this.props.location.search);
@@ -50,7 +54,10 @@ export default class MessageDetail extends Component {
   sendMessage = () => {};
   renderChatImages = imgs => {
     return imgs.map((item, index) => (
-      <img key={index} src={item} className="chatImage" alt="" />
+      <img key={index} src={item} className="chatImage" alt="chatImg" onClick={() => {
+        this.setState({currentViewImage: item})
+        this.toggleViewerVisible()
+      }}  />
     ));
   };
   _renderRow = rData => {
@@ -90,6 +97,12 @@ export default class MessageDetail extends Component {
       );
     }
   };
+  toggleViewerVisible = () => {
+    console.log(this.state.viewerVisible)
+    this.setState({
+      viewerVisible: !this.state.viewerVisible
+    })
+  }
   componentDidMount() {
     this.fetchMessages();
   }
@@ -133,6 +146,17 @@ export default class MessageDetail extends Component {
             </Button>
           </div>
         </ReplyBar>
+        {/* 测试图片浏览 */}
+        <div>
+          <ImageViewer
+            visible={this.state.viewerVisible}
+            noToolbar={true}
+            noFooter={true}
+            onMaskClick={() => this.toggleViewerVisible()}
+            onClose={() => this.toggleViewerVisible()}
+            images={[{src: this.state.currentViewImage, alt: ''}]}
+            />
+        </div>
       </MessageList>
     );
   }

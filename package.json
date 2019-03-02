@@ -21,6 +21,7 @@
     "react-router-dom": "^4.3.1",
     "react-router-transition": "^1.2.1",
     "react-scripts": "2.1.5",
+    "react-viewer": "^2.8.0",
     "redux": "^4.0.1",
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.3.0",
