@@ -7,7 +7,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { Communication, ChatList } from "./style";
 import { requestGet } from "../../utils/utils";
 import { connect } from "react-redux";
-import { updateChatList, fetchChatList } from "../../actions/index";
+import { updateChatList, fetchChatList, cacheCompanyActiveTabIndex } from "../../actions/index";
 import moment from "moment";
 import "moment/locale/zh-cn";
 
@@ -128,7 +128,13 @@ class CompanyCommunication extends Component {
   // 聊天列表
   renderChatList = (rData, s1, r1) => {
     return (
-      <Flex className='chatListItem'>
+      <Flex className='chatListItem' onClick={() => this.props.history.push({
+        pathname: '/communication/message',
+        search: `?chaid_id=${rData.id}`,
+        state: {
+          title: '消息详情'
+        }
+      })}>
         <img
           src={rData.member.head_img}
           alt=""
@@ -160,6 +166,8 @@ class CompanyCommunication extends Component {
             tabs={[{ title: "联系企业" }, { title: "我的消息" }]}
             tabBarInactiveTextColor="#888"
             initialPage={0}
+            page={this.props.activeTabIndex}
+            onChange={(tab, index) => this.props.cacheCompanyActiveTabIndex(index)}
             prerenderingSiblingsNumber={false}
           >
             <section className="company">
@@ -238,11 +246,13 @@ class CompanyCommunication extends Component {
 const mapStateToProps = state => ({
   selectedCompany: state.getIn(["companies", "selectedCompany"]).toObject(),
   selectedPerson: state.getIn(["companies", "selectedPerson"]).toObject(),
-  chatList: state.get("chatList")
+  chatList: state.get("chatList"),
+  activeTabIndex: state.getIn(['companies', 'activeTabIndex'])
 });
 const mapDispatchToProps = {
   updateChatList,
-  fetchChatList
+  fetchChatList,
+  cacheCompanyActiveTabIndex
 };
 
 export default connect(

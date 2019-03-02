@@ -198,3 +198,7 @@ export const fetchChatList = () => {
     })
   }
 }
+export const cacheCompanyActiveTabIndex = (activeTabIndex) => ({
+  type: types.CACHE_COMPANY_ACTIVE_TAB,
+  activeTabIndex
+})

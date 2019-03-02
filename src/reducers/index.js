@@ -142,7 +142,8 @@ const companies = (state=fromJS({
   selectedPerson: {
     name: '请选择联系人',
     id: ''
-  }
+  },
+  activeTabIndex: 0
 }), action) => {
   switch(action.type) {
     case types.FETCH_COMPANIES:
@@ -164,6 +165,10 @@ const companies = (state=fromJS({
         name: '请选择联系人',
         id: ''
       }))
+    case types.CACHE_COMPANY_ACTIVE_TAB:
+      return state.merge({
+        activeTabIndex: action.activeTabIndex
+      })
     default:
       return state
   }
