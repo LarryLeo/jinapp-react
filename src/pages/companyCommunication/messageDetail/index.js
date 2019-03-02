@@ -254,7 +254,7 @@ class MessageDetail extends Component {
             backgroundColor: "#f5f6fa"
           }}
         />
-        <UploadImagePreview>{this.renderDisplayImages()}</UploadImagePreview>
+        <UploadImagePreview isVisible={this.state.selectedImages.length}>{this.renderDisplayImages()}</UploadImagePreview>
         <ReplyBar>
           <label htmlFor="imgUploadBtn">
             <IoMdImage

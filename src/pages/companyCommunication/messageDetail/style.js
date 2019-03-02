@@ -63,9 +63,9 @@ export const ReplyBar = styled.div`
 export const UploadImagePreview = styled.div`
   position: fixed;
   bottom: 55px;
-  left: 0;
+  left: ${props => props.isVisible ? '0' : '-10px'};
   display: flex;
-  background-color: #f5f6fa75;
+  background-color: #007aff8c;
   padding: 5px;
   border-radius: 10px;
   .uploadImgWrapper {
