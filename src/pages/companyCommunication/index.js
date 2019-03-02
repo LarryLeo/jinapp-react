@@ -1,16 +1,28 @@
 import React, { Component } from "react";
-import { Tabs, Flex, Button, Toast, ListView, PullToRefresh } from "antd-mobile";
+import {
+  Tabs,
+  Flex,
+  Button,
+  Toast,
+  ListView,
+  PullToRefresh
+} from "antd-mobile";
 import { Link } from "react-router-dom";
 import * as qiniu from "qiniu-js";
 import { FiUpload } from "react-icons/fi";
 import { IoIosCloseCircle } from "react-icons/io";
 import { Communication, ChatList } from "./style";
-import { requestGet } from "../../utils/utils";
+import { requestGet, requestPost } from "../../utils/utils";
 import { connect } from "react-redux";
-import { updateChatList, fetchChatList, cacheCompanyActiveTabIndex } from "../../actions/index";
+import {
+  updateChatList,
+  fetchChatList,
+  cacheCompanyActiveTabIndex
+} from "../../actions/index";
 import moment from "moment";
 import "moment/locale/zh-cn";
 
+const userCredential = JSON.parse(localStorage.getItem("userCredential"));
 const dataSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2
 });
@@ -56,7 +68,43 @@ class CompanyCommunication extends Component {
   };
 
   // 测试七牛上传
-  qinUpload = async () => {
+  sendMessage = async () => {
+    // 发送参数完整性校验
+    if (!this.props.selectedCompany.id) return Toast.show("请选择联系企业");
+    if (!this.props.selectedPerson.id) return Toast.show("请选择联系人");
+    if (!this.state.content) return Toast.show("内容不能为空");
+
+    let res = await requestPost({
+      apiUrl: "/app/v1/chat/sendMessage",
+      data: {
+        ...userCredential,
+        to_company_id: this.props.selectedCompany.id,
+        to_member_id: this.props.selectedPerson.id,
+        imgs: this.state.uploadedImages.join(),
+        content: this.state.content
+      }
+    });
+    if (res.success) {
+      Toast.success("发送成功");
+      this.props.updateChatList();
+      this.setState({
+        content: "",
+        selectedImages: [],
+        displayImages: [],
+        uploadedImages: []
+      });
+      setTimeout(() => {
+        this.props.history.push({
+          pathname: "/communication/message",
+          search: `?chat_id=${res.chat_id}`,
+          state: {
+            title: "消息详情"
+          }
+        });
+      }, 1000);
+    }
+  };
+  sendMessageWithImages = async () => {
     let res = await requestGet({
       apiUrl: "/app/v1/file/uploadToken",
       data: { has_key: 0 }
@@ -84,10 +132,14 @@ class CompanyCommunication extends Component {
         complete: res => {
           console.log(res);
           uploadedImages.push(`http://jinshang-test.chimukeji.com/${res.key}`);
+          if (uploadedImages.length === this.state.selectedImages.length) {
+            console.log("图片上传完毕");
+            this.setState({ uploadedImages });
+            this.sendMessage();
+          }
         }
       });
     }
-    this.setState({ uploadedImages });
   };
 
   pickImage = e => {
@@ -128,18 +180,19 @@ class CompanyCommunication extends Component {
   // 聊天列表
   renderChatList = (rData, s1, r1) => {
     return (
-      <Flex className='chatListItem' onClick={() => this.props.history.push({
-        pathname: '/communication/message',
-        search: `?chat_id=${rData.id}`,
-        state: {
-          title: '消息详情'
+      <Flex
+        className="chatListItem"
+        onClick={() =>
+          this.props.history.push({
+            pathname: "/communication/message",
+            search: `?chat_id=${rData.id}`,
+            state: {
+              title: "消息详情"
+            }
+          })
         }
-      })}>
-        <img
-          src={rData.member.head_img}
-          alt=""
-          className="memberAvatar"
-        />
+      >
+        <img src={rData.member.head_img} alt="" className="memberAvatar" />
         <div className="messageContent">
           <div className="userInfo">
             <p className="companyName">
@@ -151,7 +204,11 @@ class CompanyCommunication extends Component {
           </div>
           <p className="lastMessage">{rData.last_message_summary}</p>
         </div>
-        <span className="time">{moment(rData.last_message_at).locale('zh-cn').fromNow()}</span>
+        <span className="time">
+          {moment(rData.last_message_at)
+            .locale("zh-cn")
+            .fromNow()}
+        </span>
       </Flex>
     );
   };
@@ -167,7 +224,9 @@ class CompanyCommunication extends Component {
             tabBarInactiveTextColor="#888"
             initialPage={0}
             page={this.props.activeTabIndex}
-            onChange={(tab, index) => this.props.cacheCompanyActiveTabIndex(index)}
+            onChange={(tab, index) =>
+              this.props.cacheCompanyActiveTabIndex(index)
+            }
             prerenderingSiblingsNumber={false}
           >
             <section className="company">
@@ -218,7 +277,14 @@ class CompanyCommunication extends Component {
                 </div>
               </Flex>
               <div className="submit">
-                <Button type="primary" onClick={() => this.qinUpload()}>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    this.state.selectedImages.length
+                      ? this.sendMessageWithImages()
+                      : this.sendMessage()
+                  }
+                >
                   提交
                 </Button>
               </div>
@@ -229,9 +295,27 @@ class CompanyCommunication extends Component {
                   this.props.chatList.get("data").toArray()
                 )}
                 renderRow={this.renderChatList}
-                renderSeparator={(sid, rid) => <div key={sid + rid} style={{width: '100%', height: 1, backgroundColor: '#d1d1d17a'}}></div>}
-                renderFooter={() => this.props.chatList.get('noMoreData') &&<p style={{textAlign: 'center'}}>到底了</p>}
-                pullToRefresh={<PullToRefresh refreshing={this.props.chatList.get('loading')} onRefresh={() => this.props.updateChatList()} />}
+                renderSeparator={(sid, rid) => (
+                  <div
+                    key={sid + rid}
+                    style={{
+                      width: "100%",
+                      height: 1,
+                      backgroundColor: "#d1d1d17a"
+                    }}
+                  />
+                )}
+                renderFooter={() =>
+                  this.props.chatList.get("noMoreData") && (
+                    <p style={{ textAlign: "center" }}>到底了</p>
+                  )
+                }
+                pullToRefresh={
+                  <PullToRefresh
+                    refreshing={this.props.chatList.get("loading")}
+                    onRefresh={() => this.props.updateChatList()}
+                  />
+                }
                 onEndReachedThreshold={30}
                 onEndReached={() => this.props.fetchChatList()}
                 style={{ height: document.documentElement.clientHeight - 110 }}
@@ -247,7 +331,7 @@ const mapStateToProps = state => ({
   selectedCompany: state.getIn(["companies", "selectedCompany"]).toObject(),
   selectedPerson: state.getIn(["companies", "selectedPerson"]).toObject(),
   chatList: state.get("chatList"),
-  activeTabIndex: state.getIn(['companies', 'activeTabIndex'])
+  activeTabIndex: state.getIn(["companies", "activeTabIndex"])
 });
 const mapDispatchToProps = {
   updateChatList,

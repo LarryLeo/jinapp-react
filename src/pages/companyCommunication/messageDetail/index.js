@@ -3,8 +3,8 @@ import { MessageList, ReplyBar, UploadImagePreview } from "./style";
 import { ListView, Flex, Button, PullToRefresh, Toast } from "antd-mobile";
 import queryString from "query-string";
 import * as qiniu from "qiniu-js";
-import { connect } from 'react-redux'
-import { updateChatList } from '../../../actions/index'
+import { connect } from "react-redux";
+import { updateChatList } from "../../../actions/index";
 import { requestGet, requestPost } from "../../../utils/utils";
 import { IoMdImage, IoIosCloseCircle } from "react-icons/io";
 import ImageViewer from "react-viewer";
@@ -87,7 +87,7 @@ class MessageDetail extends Component {
         chatDetail: [...this.state.chatDetail, newChatItem]
       });
       // 后台更新消息列表数据
-      this.props.updateChatList()
+      this.props.updateChatList();
     }
   };
   renderChatImages = imgs => {
@@ -177,7 +177,7 @@ class MessageDetail extends Component {
           uploadedImages.push(`http://jinshang-test.chimukeji.com/${ret.key}`);
           if (uploadedImages.length === this.state.selectedImages.length) {
             console.log("图片上传完毕");
-            this.setState({uploadedImages});
+            this.setState({ uploadedImages });
             this.sendMessage();
           }
         }
@@ -308,9 +308,11 @@ class MessageDetail extends Component {
   }
 }
 
-
 const mapDispatchToProps = {
-  updateChatList,
-}
+  updateChatList
+};
 
-export default connect(null, mapDispatchToProps)(MessageDetail)
+export default connect(
+  null,
+  mapDispatchToProps
+)(MessageDetail);
