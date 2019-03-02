@@ -3,6 +3,8 @@ import { MessageList, ReplyBar, UploadImagePreview } from "./style";
 import { ListView, Flex, Button, PullToRefresh, Toast } from "antd-mobile";
 import queryString from "query-string";
 import * as qiniu from "qiniu-js";
+import { connect } from 'react-redux'
+import { updateChatList } from '../../../actions/index'
 import { requestGet, requestPost } from "../../../utils/utils";
 import { IoMdImage, IoIosCloseCircle } from "react-icons/io";
 import ImageViewer from "react-viewer";
@@ -14,7 +16,7 @@ const dataSource = new ListView.DataSource({
 const reader = new FileReader();
 const myAvatar = JSON.parse(localStorage.getItem("memberInfo"));
 const userCredential = JSON.parse(localStorage.getItem("userCredential"));
-export default class MessageDetail extends Component {
+class MessageDetail extends Component {
   state = {
     pn: 1,
     ps: 10,
@@ -84,6 +86,8 @@ export default class MessageDetail extends Component {
         inputValue: "",
         chatDetail: [...this.state.chatDetail, newChatItem]
       });
+      // 后台更新消息列表数据
+      this.props.updateChatList()
     }
   };
   renderChatImages = imgs => {
@@ -303,3 +307,10 @@ export default class MessageDetail extends Component {
     );
   }
 }
+
+
+const mapDispatchToProps = {
+  updateChatList,
+}
+
+export default connect(null, mapDispatchToProps)(MessageDetail)
