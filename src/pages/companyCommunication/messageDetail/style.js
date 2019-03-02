@@ -60,3 +60,27 @@ export const ReplyBar = styled.div`
     margin: 0 10px;
   }
 `
+export const UploadImagePreview = styled.div`
+  position: fixed;
+  bottom: 55px;
+  left: 0;
+  display: flex;
+  background-color: #f5f6fa75;
+  padding: 5px;
+  border-radius: 10px;
+  .uploadImgWrapper {
+    position: relative;
+    padding:5px;
+    width: 60px;
+    height: 60px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    .close {
+      position: absolute;
+      right: -6px;
+      top: -6px;
+    }
+  }
+`

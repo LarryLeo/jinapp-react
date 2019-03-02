@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { MessageList, ReplyBar } from "./style";
+import { MessageList, ReplyBar, UploadImagePreview } from "./style";
 import { ListView, Flex, Button } from "antd-mobile";
 import queryString from "query-string";
 import { requestGet, requestPost } from "../../../utils/utils";
-import { IoMdImage } from "react-icons/io";
+import { IoMdImage, IoIosCloseCircle } from "react-icons/io";
 
 const dataSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2
@@ -104,6 +104,24 @@ export default class MessageDetail extends Component {
             backgroundColor: "#f5f6fa"
           }}
         />
+        <UploadImagePreview>
+          <div className='uploadImgWrapper'>
+            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
+            <IoIosCloseCircle
+            size={20}
+            color="rgba(0,0,0,0.7)"
+            className="close" />
+          </div>
+          <div className='uploadImgWrapper'>
+            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
+          </div>
+           <div className='uploadImgWrapper'>
+            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
+          </div>
+          <div className='uploadImgWrapper'>
+            <img src="http://img.ecyss.com/thumbnail/173/173105/98183cf1dce94e58.jpg" alt=""/>
+          </div>
+        </UploadImagePreview>
         <ReplyBar>
           <IoMdImage size={24} color="#888" className="uploadImageIcon" />
           <input className="input" type="text" placeholder="回复..." />
