@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { MessageList, ReplyBar, UploadImagePreview } from "./style";
 import { ListView, Flex, Button, PullToRefresh, Toast } from "antd-mobile";
 import queryString from "query-string";
+import * as qiniu from "qiniu-js";
 import { requestGet, requestPost } from "../../../utils/utils";
 import { IoMdImage, IoIosCloseCircle } from "react-icons/io";
 import ImageViewer from "react-viewer";
@@ -11,7 +12,7 @@ const dataSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2
 });
 const reader = new FileReader();
-const myAvatar = JSON.parse(localStorage.getItem("memberInfo")).avatar;
+const myAvatar = JSON.parse(localStorage.getItem("memberInfo"));
 const userCredential = JSON.parse(localStorage.getItem("userCredential"));
 export default class MessageDetail extends Component {
   state = {
@@ -24,6 +25,7 @@ export default class MessageDetail extends Component {
     currentViewImage: "",
     displayImages: [],
     selectedImages: [],
+    uploadedImages: [],
     inputValue: ""
   };
   fetchMessages = async () => {
@@ -55,7 +57,35 @@ export default class MessageDetail extends Component {
       loading: false
     });
   };
-  sendMessage = () => {};
+  sendMessage = async () => {
+    // 纯文本消息发送
+    if (!this.state.inputValue) return Toast.show("发送消息不能为空");
+    const queryData = queryString.parse(this.props.location.search);
+    console.log("开始发送消息了");
+    let res = await requestPost({
+      apiUrl: "/app/v1/chat/sendMessage",
+      data: {
+        ...userCredential,
+        content: this.state.inputValue,
+        chat_id: queryData.chat_id,
+        imgs: this.state.uploadedImages.join()
+      }
+    });
+    if (res.success) {
+      let newChatItem = {
+        content: this.state.inputValue,
+        imgs: this.state.uploadedImages,
+        direction: "send"
+      };
+      await this.setState({
+        selectedImages: [],
+        displayImages: [],
+        uploadedImages: [],
+        inputValue: "",
+        chatDetail: [...this.state.chatDetail, newChatItem]
+      });
+    }
+  };
   renderChatImages = imgs => {
     return imgs.map((item, index) => (
       <img
@@ -100,7 +130,7 @@ export default class MessageDetail extends Component {
           <img
             style={{ marginLeft: 10 }}
             className="avatar"
-            src={myAvatar}
+            src={myAvatar.avatar}
             alt=""
           />
         </Flex>
@@ -111,6 +141,44 @@ export default class MessageDetail extends Component {
     this.setState({
       viewerVisible: !this.state.viewerVisible
     });
+  };
+  // 测试七牛上传
+  sendMessageWithImages = async () => {
+    let res = await requestGet({
+      apiUrl: "/app/v1/file/uploadToken",
+      data: { has_key: 0 }
+    });
+    let token = res.data.upload_token;
+
+    let uploadedImages = [];
+    let config = {
+      region: qiniu.region.z2
+    };
+    for (let i = 0; i < this.state.selectedImages.length; i++) {
+      // 对必要参数进行配置
+      let file = this.state.selectedImages[i];
+      let key = `jinapp/${file.name}`;
+      let putExtra = {
+        fname: file.name,
+        params: {},
+        mimeType: ["image/png", "image/jpeg", "image/gif"] || null
+      };
+      let observable = qiniu.upload(file, key, token, putExtra, config);
+
+      observable.subscribe({
+        next: res => console.log(res),
+        error: err => console.log(err),
+        complete: ret => {
+          console.log(ret);
+          uploadedImages.push(`http://jinshang-test.chimukeji.com/${ret.key}`);
+          if (uploadedImages.length === this.state.selectedImages.length) {
+            console.log("图片上传完毕");
+            this.setState({uploadedImages});
+            this.sendMessage();
+          }
+        }
+      });
+    }
   };
   pickImages = e => {
     let files = e.target.files;
@@ -150,7 +218,6 @@ export default class MessageDetail extends Component {
   };
   renderDisplayImages = () => {
     if (!this.state.displayImages.length) return;
-    console.log("显然图片");
     return this.state.displayImages.map((item, index) => (
       <div key={index} className="uploadImgWrapper">
         <img src={item} alt="" />
@@ -208,7 +275,15 @@ export default class MessageDetail extends Component {
             onChange={e => this.setState({ inputValue: e.target.value })}
           />
           <div className="button">
-            <Button type="primary" size="small">
+            <Button
+              onClick={() =>
+                this.state.selectedImages.length
+                  ? this.sendMessageWithImages()
+                  : this.sendMessage()
+              }
+              type="primary"
+              size="small"
+            >
               发送
             </Button>
           </div>
