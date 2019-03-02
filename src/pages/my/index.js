@@ -10,6 +10,12 @@ export default class My extends Component {
       }
       localStorage.setItem('userCredential', JSON.stringify(userCredential))
     }
+    if(!localStorage.getItem('memberInfo')) {
+      let memberInfo = {
+        avatar: 'http://img.ecyss.com/character/201704/b042bcea67ec4bcf8a8939d3422df0ec.jpg'
+      }
+      localStorage.setItem('memberInfo', JSON.stringify(memberInfo))
+    }
   }
   render() {
     return (

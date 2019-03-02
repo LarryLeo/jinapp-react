@@ -130,7 +130,7 @@ class CompanyCommunication extends Component {
     return (
       <Flex className='chatListItem' onClick={() => this.props.history.push({
         pathname: '/communication/message',
-        search: `?chaid_id=${rData.id}`,
+        search: `?chat_id=${rData.id}`,
         state: {
           title: '消息详情'
         }
