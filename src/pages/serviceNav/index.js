@@ -1,18 +1,50 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
+import { ServiceList } from "./style";
 
 export default class Service extends Component {
   componentDidMount() {
-    console.log('政务页面挂载')
+    console.log("政务页面挂载");
   }
   render() {
     return (
-      <div>
-        <p>江津政务</p>
-        <Link to='/contacts'>
-          <p>跳转至警企备忘录</p>
-        </Link>
-      </div>
-    )
+      <ServiceList>
+        <ul className="serviceList">
+          <li className="listItem">
+            <p className="title">江津交巡警事故快处</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem">
+            <p className="title">江津交巡警违法举报</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem">
+            <p className="title">江津车管所排队系统</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem">
+            <p className="title">江津车管所排队系统</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem">
+            <p className="title">重庆公安出入境服务</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem">
+            <p className="title">户口居住证办理</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem">
+            <p className="title">大厅导航</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem">
+            <p className="title">警企备忘录</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+        </ul>
+      </ServiceList>
+    );
   }
 }
