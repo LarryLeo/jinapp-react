@@ -92,6 +92,18 @@ class CompanyCommunication extends Component {
       }
     }
   }
+  allowJumpTo = () => {
+    if (this.props.selectedCompany.id) {
+      this.props.history.push({
+        pathname: '/communication/personlist',
+        state: {
+          title: '选择联系人'
+        }
+      })
+    } else {
+      Toast.show('请选择联系企业')
+    }
+  }
   componentDidMount() {
     console.log(this.props.selectedCompany)
   }
@@ -117,17 +129,10 @@ class CompanyCommunication extends Component {
                 <span className='value'>{this.props.selectedCompany.name}</span>
               </Flex>
               </Link>
-              <Link to={{
-                pathname: '/communication/personlist',
-                state: {
-                  title: '选择联系人'
-                }
-              }}>
-                <Flex justify='between' className='pickerItem'>
+              <Flex onClick={() => this.allowJumpTo()} justify='between' className='pickerItem'>
                 <span className='key'>联系人</span>
                 <span className='value'>{this.props.selectedPerson.name}</span>
               </Flex>
-              </Link>
               <textarea
                 placeholder="发现商机，拓展客户"
                 value={this.state.content}
