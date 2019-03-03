@@ -2,7 +2,9 @@ import { requestGet } from '../utils/utils'
 import * as types from './actionTypes'
 
 // 提取用户凭据
-const userCredential = JSON.parse(localStorage.getItem('userCredential'))
+const userCredential = ()  => {
+  return JSON.parse(localStorage.getItem('userCredential'))
+}
 // 处理首页数据
 export const switchHomeTabs = (activeTab) => ({
   type: types.SWITCH_HOME_TAB,
@@ -83,8 +85,8 @@ export const fetchConsultSubject = (unitId) => {
     let res = await requestGet({
       apiUrl: '/app/v1/consult/getConsultSubjectList',
       data: {
-        member_id: userCredential.member_id,
-        member_token: userCredential.member_token,
+        member_id: userCredential().member_id,
+        member_token: userCredential().member_token,
         unit_id: unitId
       }
     })
@@ -118,8 +120,8 @@ export const requestHistoryData = (calledName) => {
     // 判断请求参数
     let apiUrl = calledName === 'mySuggestions' ? '/app/v1/suggestion/mySuggestionList' : '/app/v1/consult/myConsultList'
     let data = {
-      member_id: userCredential.member_id,
-      member_token: userCredential.member_token,
+      member_id: userCredential().member_id,
+      member_token: userCredential().member_token,
       pn: getState().getIn([calledName, 'pn']),
       ps: getState().getIn([calledName, 'ps']),
     }
@@ -137,7 +139,7 @@ export const fetchCompanies = () => {
     if(getState().getIn(['companies', 'data']).size) return
     let res = await requestGet({
       apiUrl: '/app/v1/company/allList',
-      data: {...userCredential}
+      data: {...userCredential()}
     })
     return dispatch({
       type: types.FETCH_COMPANIES,
@@ -150,7 +152,7 @@ export const fetchPersonList = () => {
     let company_id = getState().getIn(['companies', 'selectedCompany', 'id'])
     let res = await requestGet({
       apiUrl: '/app/v1/company/allMemberList',
-      data: {...userCredential, company_id}
+      data: {...userCredential(), company_id}
     })
     return dispatch({
       type: types.FETCH_PERSON_LIST,
@@ -187,7 +189,7 @@ export const fetchChatList = () => {
     let res = await requestGet({
       apiUrl: '/app/v1/chat/myChatList',
       data: {
-        ...userCredential,
+        ...userCredential(),
         pn: chatList.get('pn'),
         ps: chatList.get('ps')
       }
