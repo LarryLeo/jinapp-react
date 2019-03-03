@@ -92,7 +92,7 @@ class HistoryDetail extends Component {
   _renderRow = (rData, sId, rId) => {
     if (rData.reply_type === "answer") {
       return (
-        <Flex className="itemWrapper itemWrapper-answer">
+        <Flex align='start' className="itemWrapper itemWrapper-answer">
           <img
             style={{ marginRight: 10 }}
             className="avatar"

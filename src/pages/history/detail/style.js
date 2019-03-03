@@ -4,12 +4,12 @@ const rateAni = keyframes`${fadeIn}`
 export const Wrapper = styled.div`
 .am-list-body {
     padding-bottom: 30px;
+    padding-top: 10px;
     background-color: #f5f6fa;
     border: none;
   }
   .listItem {
     padding: 10px;
-    margin-bottom:10px;
     background-color: #fff;
     .row {
       margin-bottom: 10px;
@@ -48,7 +48,7 @@ export const Wrapper = styled.div`
       padding: 10px;
       border-radius: 10px;
       background-color: #fff;
-      max-width: 40%;
+      max-width: 60%;
       line-height: 1.2rem;
     }
     .content-question {
