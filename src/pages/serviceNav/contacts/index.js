@@ -25,11 +25,13 @@ export default class Contacts extends Component {
             <li key={item.id} className="listItem">
               <span className="name">{item.contact}</span>
               <span className="unit">{item.unit_name}</span>
-              <img
+              <a href={`tel:${item.number}`}>
+                <img
                 style={{ width: 24, height: 24 }}
                 src="http://jz.test.chimukeji.com/assets/web/img/icon-phone.png"
                 alt=""
               />
+              </a>
             </li>
           ))}
         </ul>
