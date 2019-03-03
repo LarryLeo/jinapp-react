@@ -47,7 +47,10 @@ export default class App extends Component {
     }, {
       path: '/register',
       component: Register
-    }, {
+    },{
+      path: '/notice',
+      component: Notice
+    },{
       path: '/notice/detail',
       component: NoticeDetail
     }, {
@@ -59,18 +62,9 @@ export default class App extends Component {
     }, {
       path: '/guide/detail',
       component: GuideDetail
-    }, {
-      path: '/make/:type',
-      component: Make
-    }, {
-      path: '/my/history',
-      component: History
-    }, {
+    },{
       path: '/my/history/:type',
       component: HistoryDetail
-    }, {
-      path: '/communication',
-      component: CompanyCommunication
     },{
       path: '/communication/companies',
       component: CompanyList
@@ -100,7 +94,9 @@ export default class App extends Component {
               className="switch-wrapper"
             >
               {routes.map((route, index) => <Route exact path={route.path} component={route.component} key={index} />)}
-              <Route exact path='/notice' render={() => this.isLogin() ? (<Notice />) : <Redirect to='/login' />} />
+              <Route exact path='/make/:type' render={(props) => this.isLogin() ? (<Make {...props} />) : <Redirect to='/login' />} />
+              <Route exact path='/my/history' render={(props) => this.isLogin() ? (<History {...props} />) : <Redirect to='/login' />} />
+              <Route exact path='/communication' render={(props) => this.isLogin() ? (<CompanyCommunication {...props} />) : <Redirect to='/login' />} />
               {/* 没找到404, 始终写在最后一个路由后面，保证检索完整个路由 */}
               <Route component={NotFound} />
             </AnimatedSwitch>

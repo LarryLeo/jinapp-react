@@ -22,6 +22,10 @@ class HeaderTitle extends Component {
           title: "江津政务",
           level: 1
         };
+      case "/login":
+        return {
+          title: '登录'
+        };
       case "/":
         switch (this.props.homeTabs.get('activeTab')) {
           case "home":
