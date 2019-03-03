@@ -16,14 +16,6 @@ export default class Service extends Component {
             <IoIosArrowForward size={20} color="#888" />
           </li>
           <li className="listItem">
-            <p className="title">江津交巡警违法举报</p>
-            <IoIosArrowForward size={20} color="#888" />
-          </li>
-          <li className="listItem">
-            <p className="title">江津车管所排队系统</p>
-            <IoIosArrowForward size={20} color="#888" />
-          </li>
-          <li className="listItem">
             <p className="title">江津车管所排队系统</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>
