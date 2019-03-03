@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Flex } from "antd-mobile";
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { connect } from 'react-redux'
-import { cacheHomeState } from '../../actions/index'
-
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { connect } from "react-redux";
+import { cacheHomeState, checkLogin } from "../../actions/index";
 
 import { HomePageWrapper } from "./style";
 
@@ -17,54 +16,55 @@ import iconPolicy from "../../assets/icons/policy.png";
 import iconSuggestion from "../../assets/icons/suggestion.png";
 import bgImgWeather from "../../assets/images/weather.jpg";
 
-import { requestGet } from '../../utils/utils'
-
+import { requestGet } from "../../utils/utils";
 
 class Home extends Component {
   state = {
     slideImages: [slideImage, slideImage, slideImage],
     weather: {},
-    consultNum: ''
+    consultNum: ""
   };
-
-  fetchIndexPageData = async() => {
+  fetchIndexPageData = async () => {
     let weatherRes = await requestGet({
-      apiUrl: '/app/v1/index/weather'
-    })
+      apiUrl: "/app/v1/index/weather"
+    });
     let consultNumRes = await requestGet({
-      apiUrl: '/app/v1/index/getIndexView'
-    })
+      apiUrl: "/app/v1/index/getIndexView"
+    });
     this.setState({
       weather: weatherRes.data.weather,
-      consultNum:consultNumRes.data.total_consult_member
-    })
-  }
+      consultNum: consultNumRes.data.total_consult_member
+    });
+  };
 
   componentDidMount() {
-
-  if(this.props.homeTabs.get('weather').size) {
-    const state = this.props.homeTabs.toJS()
-    return this.setState({
-     weather: state.weather,
-     consultNum: state.consultNum
-    })
-  }
-  this.fetchIndexPageData()
+    if (this.props.homeTabs.get("weather").size) {
+      const state = this.props.homeTabs.toJS();
+      return this.setState({
+        weather: state.weather,
+        consultNum: state.consultNum
+      });
+    }
+    this.fetchIndexPageData();
+    console.log('手而已挂载')
+    this.props.checkLogin(!!JSON.parse(localStorage.getItem('userCredential')))
   }
   componentWillUnmount() {
-    this.props.cacheHomeState(this.state)
+    this.props.cacheHomeState(this.state);
   }
   render() {
     return (
       <HomePageWrapper>
-        <section className='slider'>
+        <section className="slider">
           <Carousel
             showArrows={false}
             showStatus={false}
             showThumbs={false}
             infiniteLoop={true}
           >
-            {this.state.slideImages.map((slide, index) => <img src={slide} alt='slide' className='slideImg' key={index} />)}
+            {this.state.slideImages.map((slide, index) => (
+              <img src={slide} alt="slide" className="slideImg" key={index} />
+            ))}
           </Carousel>
         </section>
         {/* 功能导航  */}
@@ -86,12 +86,14 @@ class Home extends Component {
               </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#ffa800" }}>
-              <Link to={{
-                pathname: '/guide',
-                state: {
-                  title: '办事指南'
-                }
-              }}>
+              <Link
+                to={{
+                  pathname: "/guide",
+                  state: {
+                    title: "办事指南"
+                  }
+                }}
+              >
                 <Flex justify="center">
                   <img className="menuIcon" src={iconGuide} alt="" />
                   <span>办事指南</span>
@@ -99,32 +101,44 @@ class Home extends Component {
               </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#ff5555" }}>
-              <Link to={{pathname: '/make/suggestion', state: {title: '意见建议'}}}>
+              <Link
+                to={{
+                  pathname: "/make/suggestion",
+                  state: { title: "意见建议" }
+                }}
+              >
                 <Flex justify="center">
                   <img className="menuIcon" src={iconSuggestion} alt="" />
                   <span>意见建议</span>
-              </Flex>
+                </Flex>
               </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#00c9db" }}>
-              <Link to={{pathname: '/make/consultation', state: {title: '求助咨询'}}}>
+              <Link
+                to={{
+                  pathname: "/make/consultation",
+                  state: { title: "求助咨询" }
+                }}
+              >
                 <Flex justify="center">
                   <img className="menuIcon" src={iconConsult} alt="" />
                   <span>求助咨询</span>
-              </Flex>
+                </Flex>
               </Link>
             </div>
             <div className="menuItem" style={{ backgroundColor: "#007aff" }}>
-              <Link to={{
-                pathname: '/communication',
-                state: {
-                  title: '警企互联'
-                }
-              }}>
+              <Link
+                to={{
+                  pathname: "/communication",
+                  state: {
+                    title: "警企互联"
+                  }
+                }}
+              >
                 <Flex justify="center">
-                <img className="menuIcon" src={iconChat} alt="" />
-                <span>警企互联</span>
-              </Flex>
+                  <img className="menuIcon" src={iconChat} alt="" />
+                  <span>警企互联</span>
+                </Flex>
               </Link>
             </div>
           </Flex>
@@ -141,7 +155,9 @@ class Home extends Component {
         <section className="weather">
           <img src={bgImgWeather} alt="weather" className="weatherBg" />
           <div className="weatherText">
-            <p className="temp">{this.state.weather.temp1}~{this.state.weather.temp2}</p>
+            <p className="temp">
+              {this.state.weather.temp1}~{this.state.weather.temp2}
+            </p>
             <p className="text">今日天气：{this.state.weather.weather}</p>
           </div>
         </section>
@@ -150,13 +166,16 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  homeTabs: state.get('homeTabs')
-})
+const mapStateToProps = state => ({
+  homeTabs: state.get("homeTabs")
+});
 
 const mapDispatchToProps = {
   cacheHomeState,
-}
+  checkLogin
+};
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

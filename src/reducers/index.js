@@ -204,6 +204,19 @@ export const chatList = (state=fromJS({
       return state
   }
 }
+// 追踪登录状态
+export const loginState = (state=fromJS({
+  login: false
+}), action) => {
+  switch (action.type) {
+    case types.CHECK_LOGIN:
+      return state.merge({
+        login: action.login
+      })
+    default:
+      return state
+  }
+}
 // reducer工厂
 const reducerFactory = (reducerName, reducerFunctionName) => {
   return (state, action) => {
@@ -225,5 +238,6 @@ export default combineReducers({
   mySuggestions: reducerFactory('mySuggestions', historyDataGenerator),
   myConsultations: reducerFactory('myConsultations', historyDataGenerator),
   companies,
-  chatList
+  chatList,
+  loginState
 });

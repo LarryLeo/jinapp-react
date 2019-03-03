@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Button, Toast } from "antd-mobile";
+import { connect } from "react-redux";
+import { checkLogin } from "../../actions/index";
 import { requestPost } from "../../utils/utils";
 import { LoginForm } from "./style";
-export default class Login extends Component {
+class Login extends Component {
   state = {
     counter: 30,
     enableCounter: false,
@@ -49,6 +51,7 @@ export default class Login extends Component {
         mobile: "",
         validate_code: ""
       });
+      this.props.checkLogin(true);
       setTimeout(() => {
         this.props.history.replace({
           pathname: "/"
@@ -126,3 +129,12 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = {
+  checkLogin
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

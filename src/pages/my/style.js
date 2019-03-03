@@ -26,4 +26,10 @@ export const MyCenter = styled.div`
   .am-list-item .am-list-line .am-list-content {
     padding: 15px 0;
   }
+  .logout {
+    display: ${props => props.isLogin ? 'block' : 'none'}
+  }
+  .login {
+    display: ${props => props.isLogin ? 'none' : 'block'}
+  }
 `

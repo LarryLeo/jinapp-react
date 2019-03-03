@@ -1,30 +1,29 @@
 import React, { Component } from "react";
 import { List, Button } from "antd-mobile";
 import { MyCenter } from './style'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { checkLogin } from '../../actions/index'
 import defualtAvatar from '../../assets/images/avatar.jpg'
 
 const { Item, Brief } = List;
-export default class My extends Component {
+class My extends Component {
+  logout = () => {
+    localStorage.removeItem('userCredential')
+    localStorage.removeItem('memberInfo')
+    this.props.checkLogin(false)
+    this.setState({
+      isLogin: false
+    })
+  }
+  fetchUserInfo = () => {
+
+  }
   componentDidMount() {
-    // 用户凭据存入本地
-    if (!localStorage.getItem("userCredential")) {
-      let userCredential = {
-        member_id: 387,
-        member_token: "6AB00674C84F52118AD8E99D6FE4B669"
-      };
-      localStorage.setItem("userCredential", JSON.stringify(userCredential));
-    }
-    if (!localStorage.getItem("memberInfo")) {
-      let memberInfo = {
-        avatar:
-          "http://img.ecyss.com/character/201704/b042bcea67ec4bcf8a8939d3422df0ec.jpg"
-      };
-      localStorage.setItem("memberInfo", JSON.stringify(memberInfo));
-    }
   }
   render() {
     return (
-      <MyCenter>
+      <MyCenter isLogin={this.props.loginState}>
         <div className="userInfoPanel">
           <img className='avatar' src={defualtAvatar} alt=""/>
           <div className='inlineWrapper'>
@@ -58,9 +57,23 @@ export default class My extends Component {
           </Item>
         </List>
         <div className='button'>
-          <Button type='warning'>退出登录</Button>
+          <Button onClick={() => this.logout()} className='logout' type='warning'>退出登录</Button>
+          <Button onClick={() => {
+            this.props.history.push('/login')
+          }} className='login' type='primary'>登录</Button>
         </div>
       </MyCenter>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  loginState: state.getIn(['loginState', 'login'])
+})
+
+const mapDispatchToProps = {
+  checkLogin
+}
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(My))

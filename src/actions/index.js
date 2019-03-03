@@ -202,3 +202,9 @@ export const cacheCompanyActiveTabIndex = (activeTabIndex) => ({
   type: types.CACHE_COMPANY_ACTIVE_TAB,
   activeTabIndex
 })
+
+// 追踪登录状态
+export const checkLogin = (login) => ({
+  type: types.CHECK_LOGIN,
+  login
+})
