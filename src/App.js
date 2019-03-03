@@ -21,6 +21,7 @@ import CompanyCommunication from './pages/companyCommunication/index'
 import CompanyList from './pages/companyCommunication/companies/index'
 import PersonList from './pages/companyCommunication/person/index'
 import MessageDetail from './pages/companyCommunication/messageDetail/index'
+import Navigation from './pages/serviceNav/navigation/index'
 import Contacts from './pages/serviceNav/contacts/index'
 
 import HeaderTitle from './components/HeaderTitle/index'
@@ -78,6 +79,9 @@ export default class App extends Component {
     },{
       path: '/communication/message',
       component: MessageDetail
+    },{
+      path: '/navigation',
+      component: Navigation
     }]
 
     return (

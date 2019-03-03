@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { ServiceList } from "./style";
 
-export default class Service extends Component {
+class Service extends Component {
   componentDidMount() {
     console.log("政务页面挂载");
   }
@@ -27,11 +27,21 @@ export default class Service extends Component {
             <p className="title">户口居住证办理</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>
-          <li className="listItem">
+          <li className="listItem" onClick={() => this.props.history.push({
+            pathname: '/navigation',
+            state: {
+              title: '大厅导航'
+            }
+          })}>
             <p className="title">大厅导航</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>
-          <li className="listItem">
+          <li className="listItem" onClick={() => this.props.history.push({
+            pathname: '/contacts',
+            state: {
+              title: '警企备忘录'
+            }
+          })}>
             <p className="title">警企备忘录</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>
@@ -40,3 +50,5 @@ export default class Service extends Component {
     );
   }
 }
+
+export default withRouter(Service)
