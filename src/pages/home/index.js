@@ -147,7 +147,12 @@ class Home extends Component {
         <section className="consultInfo">
           <Flex justify="between">
             <span style={{ fontSize: "16px" }}>{this.state.consultNum}人</span>
-            <span style={{ fontSize: "16px" }}>立即咨询</span>
+            <Link to={{
+              pathname: "/make/consultation",
+              state: { title: "求助咨询" }
+            }}>
+              <span style={{ fontSize: "16px" }}>立即咨询</span>
+            </Link>
           </Flex>
           <p style={{ marginTop: "20px", color: "#9ed5ff" }}>已在警企e通咨询</p>
         </section>
