@@ -170,10 +170,10 @@ class MessageDetail extends Component {
       let observable = qiniu.upload(file, key, token, putExtra, config);
 
       observable.subscribe({
-        next: res => console.log(res),
-        error: err => console.log(err),
+        next: res => console.log(),
+        error: err => console.log(),
         complete: ret => {
-          console.log(ret);
+          console.log();
           uploadedImages.push(`http://jinshang-test.chimukeji.com/${ret.key}`);
           if (uploadedImages.length === this.state.selectedImages.length) {
             console.log("图片上传完毕");
@@ -199,7 +199,6 @@ class MessageDetail extends Component {
         reader.readAsDataURL(files[fileIndex]);
       } else {
         console.log("全部终了");
-        console.log(displayImages);
         this.setState({
           selectedImages: [...this.state.selectedImages, ...files],
           displayImages: [...this.state.displayImages, ...displayImages]

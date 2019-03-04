@@ -20,7 +20,6 @@ class My extends Component {
     });
   };
   componentDidMount() {
-    console.log("我的");
     const memberInfo = JSON.parse(localStorage.getItem("memberInfo"));
     memberInfo && this.setState({memberInfo})
   }
@@ -80,7 +79,7 @@ class My extends Component {
           <Item
             thumb="http://jz.test.chimukeji.com/assets/web/img/icon-about.png"
             arrow="horizontal"
-            onClick={() => console.log("object")}
+            onClick={() => console.log("关于")}
           >
             关于
           </Item>

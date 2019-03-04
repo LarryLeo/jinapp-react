@@ -5,7 +5,6 @@ import { ServiceList } from "./style";
 
 class Service extends Component {
   componentDidMount() {
-    console.log("政务页面挂载");
   }
   render() {
     return (

@@ -127,13 +127,11 @@ class CompanyCommunication extends Component {
       let observable = qiniu.upload(file, key, token, putExtra, config);
 
       observable.subscribe({
-        next: res => console.log(res),
-        error: err => console.log(err),
+        next: res => console.log(),
+        error: err => console.log(),
         complete: res => {
-          console.log(res);
           uploadedImages.push(`http://jinshang-test.chimukeji.com/${res.key}`);
           if (uploadedImages.length === this.state.selectedImages.length) {
-            console.log("图片上传完毕");
             this.setState({ uploadedImages });
             this.sendMessage();
           }
@@ -157,7 +155,6 @@ class CompanyCommunication extends Component {
         reader.readAsDataURL(files[fileIndex]);
       } else {
         console.log("全部终了");
-        console.log(displayImages);
         this.setState({
           selectedImages: [...this.state.selectedImages, ...files],
           displayImages: [...this.state.displayImages, ...displayImages]

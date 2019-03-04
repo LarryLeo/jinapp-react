@@ -46,7 +46,6 @@ class Home extends Component {
       });
     }
     this.fetchIndexPageData();
-    console.log('手而已挂载')
     this.props.checkLogin(!!JSON.parse(localStorage.getItem('userCredential')))
   }
   componentWillUnmount() {
