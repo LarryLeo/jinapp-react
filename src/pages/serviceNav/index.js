@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import { Toast } from 'antd-mobile'
 import { IoIosArrowForward } from "react-icons/io";
 import { ServiceList } from "./style";
 
@@ -10,19 +11,23 @@ class Service extends Component {
     return (
       <ServiceList>
         <ul className="serviceList">
-          <li className="listItem">
+          <li className="listItem" onClick={() => window.location.href = 'https://jxj.roncube.com/jxj/index.php/Index/tongyi.shtml'}>
             <p className="title">江津交巡警事故快处</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>
-          <li className="listItem">
+          <li className="listItem" onClick={() => window.location.href = 'https://jxj.roncube.com/jxj/index.php/Index/wfjb.shtml'}>
+            <p className="title">江津交巡警违法举报</p>
+            <IoIosArrowForward size={20} color="#888" />
+          </li>
+          <li className="listItem" onClick={() => window.location.href = 'https://jxj.roncube.com/jxj/index.php/Index/wfjb.shtml'}>
             <p className="title">江津车管所排队系统</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>
-          <li className="listItem">
+          <li className="listItem" onClick={() => Toast.show('暂未开放')}>
             <p className="title">重庆公安出入境服务</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>
-          <li className="listItem">
+          <li className="listItem" onClick={() => Toast.show('暂未开放')}>
             <p className="title">户口居住证办理</p>
             <IoIosArrowForward size={20} color="#888" />
           </li>

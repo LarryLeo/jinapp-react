@@ -30,7 +30,6 @@ import BottomTabNavigator from './components/BottomTabNavigator/index'
 
 export default class App extends Component {
   isLogin = () => {
-    console.log('判断登录')
     return !!JSON.parse(localStorage.getItem('userCredential'))
   }
   mapStyles = (styles) => ({

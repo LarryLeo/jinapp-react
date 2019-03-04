@@ -107,7 +107,6 @@ class Make extends Component {
   }
 
   componentDidMount() {
-    console.log('object')
     // redux中未缓存单位列表即请求数据
     !this.props.unitList.length && this.props.fetchUnitList();
     let unitPickerData = this.props.unitList.map(item => ({
