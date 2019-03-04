@@ -9,7 +9,7 @@ export const MyCenter = styled.div`
     background-color: #fff;
     margin-bottom: 10px;
     .avatar {
-      margin-right: 10px;
+      margin-right: 15px;
       width: 60px;
       height: 60px;
       border-radius: 30px;

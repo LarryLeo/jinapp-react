@@ -4,7 +4,6 @@ import { MyCenter } from "./style";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { checkLogin } from "../../actions/index";
-import { requestGet } from "../../utils/utils";
 import defaultAvatar from "../../assets/images/avatar_placeholder.png";
 
 const { Item, Brief } = List;
@@ -20,37 +19,10 @@ class My extends Component {
       memberInfo: {}
     });
   };
-  saveUserInfo = ({ mobile, realname }) => {
-    let memberInfo = {
-      mobile,
-      realname,
-      avatar:
-        "http://img.ecyss.com/character/201704/b042bcea67ec4bcf8a8939d3422df0ec.jpg"
-    };
-    localStorage.setItem("memberInfo", JSON.stringify(memberInfo));
-    this.setState({
-      memberInfo
-    });
-  };
-  fetchUserInfo = async () => {
-    let memberInfo = JSON.parse(localStorage.getItem("memberInfo"));
-    if (memberInfo) {
-      return this.setState({
-        memberInfo
-      });
-    }
-    const userCredential = JSON.parse(localStorage.getItem("userCredential"));
-    let res = await requestGet({
-      apiUrl: "/app/v1/member/view",
-      data: {
-        ...userCredential
-      }
-    });
-    res.success && this.saveUserInfo(res.data);
-  };
   componentDidMount() {
     console.log("我的");
-    this.fetchUserInfo();
+    const memberInfo = JSON.parse(localStorage.getItem("memberInfo"));
+    memberInfo && this.setState({memberInfo})
   }
   render() {
     return (
@@ -61,7 +33,11 @@ class My extends Component {
             src={this.state.memberInfo.avatar || defaultAvatar}
             alt=""
           />
-          <div className="inlineWrapper">
+          <div className="inlineWrapper"  style={this.props.loginState ? {} : {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}>
             <p className="userName">
               {this.state.memberInfo.realname || "未登录"}
             </p>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Toast } from "antd-mobile";
 import { connect } from "react-redux";
 import { checkLogin } from "../../actions/index";
-import { requestPost } from "../../utils/utils";
+import { requestPost, requestGet } from "../../utils/utils";
 import { LoginForm } from "./style";
 class Login extends Component {
   state = {
@@ -35,6 +35,29 @@ class Login extends Component {
     });
     this.countDown();
   };
+  saveUserInfo = ({ mobile, realname }) => {
+    let memberInfo = {
+      mobile,
+      realname,
+      avatar:
+        "http://img.ecyss.com/character/201704/b042bcea67ec4bcf8a8939d3422df0ec.jpg"
+    };
+    localStorage.setItem("memberInfo", JSON.stringify(memberInfo));
+    // 返回
+    setTimeout(() => {
+        this.props.history.goBack();
+      }, 1000);
+  };
+  fetchUerInfo = async(data) => {
+    let res = await requestGet({
+      apiUrl: "/app/v1/member/view",
+      data: {
+        member_id: data.member_id,
+        member_token: data.member_token
+      }
+    })
+    res.success && this.saveUserInfo(res.data)
+  }
   login = async () => {
     if (!this.state.mobile) return Toast.show("请填写手机号");
     if (!this.state.validate_code) return Toast.show("请填写验证码");
@@ -46,7 +69,7 @@ class Login extends Component {
       }
     });
     if (res.success) {
-      Toast.success("登录成功");
+      // 清空输入框
       this.setState({
         mobile: "",
         validate_code: ""
@@ -59,9 +82,8 @@ class Login extends Component {
       };
       localStorage.setItem("userCredential", JSON.stringify(userCredential));
       this.props.checkLogin(true);
-      setTimeout(() => {
-        this.props.history.goBack();
-      }, 1000);
+      // 请求用户信息
+      this.fetchUerInfo(data)
     } else {
       Toast.fail("登录失败");
     }

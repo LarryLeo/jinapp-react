@@ -9,6 +9,8 @@ export const LoginForm = styled.div`
     background-color: #fff;
     padding: 15px;
     margin-bottom: 15px;
+    border: 1px solid #dadada;
+    border-radius: 6px;
   }
   .key {
     width: 50px;
@@ -17,6 +19,7 @@ export const LoginForm = styled.div`
   }
   .input {
     flex: 1;
+    padding-left: 10px;
     border: none;
   }
   .vcode {
@@ -30,6 +33,8 @@ export const LoginForm = styled.div`
     position: absolute;
     right: 0;
     top: 0;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
   }
   .buttonArea {
     display: flex;
